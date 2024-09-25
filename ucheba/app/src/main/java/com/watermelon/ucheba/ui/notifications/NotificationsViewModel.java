@@ -10,7 +10,8 @@ public class NotificationsViewModel extends ViewModel {
 
     public NotificationsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("это аккаунт");
+        mText.setValue("Редактирование пользователя");
+
     }
 
     public LiveData<String> getText() {
