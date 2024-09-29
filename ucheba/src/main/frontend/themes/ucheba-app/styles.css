@@ -1,0 +1,6 @@
+@import "theme-editor.css";
+@import url('./views/main-view.css');
+@import url('./views/authorization-view.css');
+@import url('./views/registration-view.css');
+@import url('./views/posts-view.css');
+@import url('./views/account-view.css');

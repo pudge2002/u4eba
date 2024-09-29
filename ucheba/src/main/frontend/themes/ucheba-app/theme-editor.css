@@ -1,0 +1,41 @@
+
+.pinkText{
+    color: #c04b6d;
+    }
+.grayText{
+    color: #939393;
+}
+.custom-button {
+    background-color: #e35d84;
+    color: white;
+}
+
+.custom-button:hover {
+    background-color: #c04b6d;
+}
+
+.second-button {
+    color:#666666;
+}
+
+.second-button:hover {
+    background-color: rgba(204,51,102, 0.2);
+}
+.left-aligned {
+    margin-left: 0;
+    margin-right: auto;
+    width: 110%;
+}
+.highlight {
+    background-color: var(--lumo-primary-color-50pct);
+    color: #c04b6d;
+}
+.nav-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-link.active {
+    font-weight: bold;
+    color: var(--lumo-primary-text-color);
+}
