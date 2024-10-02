@@ -101,19 +101,14 @@ public class AuthorizationView extends Composite<VerticalLayout> {
         layoutColumn2.add(buttonTertiary);
 
         buttonPrimary.addClickListener(e -> {
-            try {
-                UserAuthentication auth = new UserAuthentication();
-                String username = textField.getValue();
-                String password = passwordField.getValue();
+            UserAuthentication auth = new UserAuthentication();
+            String username = textField.getValue();
+            String password = passwordField.getValue();
 
-                if (auth.authenticate(username, password))
-                    UI.getCurrent().navigate(MainView.class);
-                else {textField.getStyle().set("Color","red");
-                        errorMessage.setVisible(true);}
-            }
-            catch (SQLException t) {
-               textField.getStyle().set("Color","red");
-            }
+            if (auth.authenticate(username, password))
+                UI.getCurrent().navigate(MainView.class);
+            else {textField.getStyle().set("Color","red");
+                    errorMessage.setVisible(true);}
         });
         buttonTertiary.addClickListener(e -> {
 

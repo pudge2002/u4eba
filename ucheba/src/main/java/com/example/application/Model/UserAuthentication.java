@@ -10,8 +10,12 @@ import java.sql.SQLException;
 public class UserAuthentication {
     private Connect_to_DataBase dbConnection;
 
-    public UserAuthentication() throws SQLException {
-        dbConnection = Connect_to_DataBase.getInstance();
+    public UserAuthentication() {
+        try {
+            dbConnection = Connect_to_DataBase.getInstance();
+        } catch (SQLException e) {
+            System.err.println("Ошибка при подключении к базе данных: " + e.getMessage());
+        }
     }
 
     public boolean authenticate(String username, String password) {
@@ -26,24 +30,19 @@ public class UserAuthentication {
                 return resultSet.next();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
             return false;
         }
     }
 
     public static void main(String[] args) {
-        try {
-            UserAuthentication auth = new UserAuthentication();
-            String username = "newuser";
-            String password = "hashed_password";
-
-            if (auth.authenticate(username, password)) {
-                System.out.println("Аутентификация успешна!");
-            } else {
-                System.out.println("Аутентификация не удалась.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        UserAuthentication auth = new UserAuthentication();
+        String username = "newuser";
+        String password = "hashed_password";
+        if (auth.authenticate(username, password)) {
+            System.out.println("Аутентификация успешна!");
+        } else {
+            System.out.println("Аутентификация не удалась.");
         }
     }
 }

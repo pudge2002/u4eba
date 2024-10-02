@@ -15,7 +15,11 @@ public class Connect_to_DataBase {
     private static final String PASSWORD = "password";
     // Private constructor to prevent instantiation
     private Connect_to_DataBase() throws SQLException {
-        connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try {
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            System.err.println("Ошибка при подключении к базе данных: " + e.getMessage());
+        }
     }
 
     // Public method to get the single instance of the class
@@ -47,7 +51,7 @@ public class Connect_to_DataBase {
              ResultSet resultSet = statement.executeQuery("SELECT 1")) {
             return resultSet.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при проверке подключения: " + e.getMessage());
             return false;
         }
     }
