@@ -1,11 +1,14 @@
 package com.example.application.views.authorization;
 
+import java.sql.SQLException;
+import com.example.application.Model.*;
 import com.example.application.views.main.MainView;
 import com.example.application.views.registration.RegistrationView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
@@ -85,6 +88,8 @@ public class AuthorizationView extends Composite<VerticalLayout> {
         logo.setWidth("200px");
         logo.setHeight("200px");
 
+        H2 errorMessage = new H2("Неверный логин или пароль");
+        errorMessage.setVisible(false);
         getContent().add(layoutRow);
         layoutRow.add(layoutRow2);
         layoutRow.getStyle().set("margin-top","15vh");
@@ -96,8 +101,19 @@ public class AuthorizationView extends Composite<VerticalLayout> {
         layoutColumn2.add(buttonTertiary);
 
         buttonPrimary.addClickListener(e -> {
+            try {
+                UserAuthentication auth = new UserAuthentication();
+                String username = textField.getValue();
+                String password = passwordField.getValue();
 
-            UI.getCurrent().navigate(MainView.class);
+                if (auth.authenticate(username, password))
+                    UI.getCurrent().navigate(MainView.class);
+                else {textField.getStyle().set("Color","red");
+                        errorMessage.setVisible(true);}
+            }
+            catch (SQLException t) {
+               textField.getStyle().set("Color","red");
+            }
         });
         buttonTertiary.addClickListener(e -> {
 
