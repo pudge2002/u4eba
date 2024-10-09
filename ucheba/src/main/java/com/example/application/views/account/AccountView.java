@@ -29,7 +29,6 @@ import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 public class AccountView extends Composite<VerticalLayout>implements BeforeEnterObserver {
     H1 h1 = new H1();
     public AccountView() {
-
         HorizontalLayout layoutRow = new HorizontalLayout();
         VerticalLayout layoutColumn2 = new VerticalLayout();
         Avatar avatar = new Avatar();
@@ -37,6 +36,7 @@ public class AccountView extends Composite<VerticalLayout>implements BeforeEnter
         H6 h6 = new H6();
         Button buttonSecondary = new Button();
         TabSheet tabSheet = new TabSheet();
+
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
         getContent().setJustifyContentMode(JustifyContentMode.CENTER);
@@ -52,27 +52,33 @@ public class AccountView extends Composite<VerticalLayout>implements BeforeEnter
         layoutRow.setFlexGrow(1.0, layoutColumn2);
         layoutColumn2.setWidth("100%");
         layoutColumn2.getStyle().set("flex-grow", "1");
-        avatar.setName("Firstname Lastname");
-        avatar.setWidth("100px");
-        avatar.setHeight("100px");
-        h2.setText("Heading");
+        avatar.setName("Menshev");
+        avatar.setWidth("150px");
+        avatar.setHeight("150px");
+        h2.setText("Menshev");
         h2.setWidth("max-content");
-        h6.setText("Heading");
+        h6.setText("student");
         h6.setWidth("max-content");
         buttonSecondary.setText("Редактировать");
+        buttonSecondary.getStyle().set("margin-top","20%");
         buttonSecondary.setWidth("min-content");
         getContent().setAlignSelf(FlexComponent.Alignment.CENTER, tabSheet);
         tabSheet.setWidth("min-content");
-        tabSheet.getStyle().set("flex-grow", "1");
+        tabSheet.getStyle().set("flex-grow", "1").set("width","100%");
         setTabSheetSampleData(tabSheet);
-        getContent().add(h1);
+
+
         getContent().add(layoutRow);
         layoutRow.add(layoutColumn2);
         layoutColumn2.add(avatar);
         layoutColumn2.add(h2);
         layoutColumn2.add(h6);
+        layoutRow.getStyle().set("width", "90%");
         layoutRow.add(buttonSecondary);
         getContent().add(tabSheet);
+
+        // Добавляем класс для стилизации
+        getContent().addClassName("main-content");
 
         buttonSecondary.addClickListener(e -> {
             UI.getCurrent().navigate(AccountEditView.class);
@@ -84,7 +90,6 @@ public class AccountView extends Composite<VerticalLayout>implements BeforeEnter
         if (isMobile) {
             getContent().add(new mobileNav());
         } else {
-            h1.getStyle().set("margin-top","5%");
             getContent().add(new desktopNav());
         }
     }
@@ -96,7 +101,12 @@ public class AccountView extends Composite<VerticalLayout>implements BeforeEnter
         }
     }
     private void setTabSheetSampleData(TabSheet tabSheet) {
-        tabSheet.add("Посты", new Div(new Text("ниче нет)")));
-        tabSheet.add("Вопросы", new Div(new Text("и тут ниче)")));
+        Div postsDiv = new Div(new Text("Пока пусто"));
+        postsDiv.addClassName("custom-div");
+        tabSheet.add("Посты", postsDiv);
+
+        Div questionsDiv = new Div(new Text("Пока пусто"));
+        questionsDiv.addClassName("custom-div");
+        tabSheet.add("Вопросы", questionsDiv);
     }
 }
