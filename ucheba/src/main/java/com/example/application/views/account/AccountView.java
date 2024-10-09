@@ -3,8 +3,10 @@ package com.example.application.views.account;
 import com.example.application.views.main.MainView;
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
+import com.example.application.views.registration.RegistrationView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
@@ -71,12 +73,15 @@ public class AccountView extends Composite<VerticalLayout>implements BeforeEnter
         layoutColumn2.add(h6);
         layoutRow.add(buttonSecondary);
         getContent().add(tabSheet);
+
+        buttonSecondary.addClickListener(e -> {
+            UI.getCurrent().navigate(AccountEditView.class);
+        });
     }
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         boolean isMobile = DeviceUtils.isMobileDevice();
         if (isMobile) {
-
             getContent().add(new mobileNav());
         } else {
             h1.getStyle().set("margin-top","5%");
