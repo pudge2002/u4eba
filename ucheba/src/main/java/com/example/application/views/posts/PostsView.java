@@ -9,11 +9,9 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.AfterNavigationEvent;
-import com.vaadin.flow.router.AfterNavigationObserver;
-import com.vaadin.flow.router.Menu;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.VaadinSession;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,9 +25,24 @@ public class PostsView extends Div implements AfterNavigationObserver {
     public PostsView() {
         addClassName("posts-view");
         setSizeFull();
+
+        getStyle().set("margin", "0");
+        getStyle().set("padding", "0");
+
         grid.setHeight("100%");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS);
         grid.addComponentColumn(person -> createCard(person));
+
+        grid.getStyle().set("margin", "0");
+        grid.getStyle().set("padding", "0");
+        grid.getStyle().set("background-color", "#E6E9ED");
+
+        grid.addItemClickListener(event -> {
+            Person person = event.getItem();
+            VaadinSession.getCurrent().setAttribute("person", person);
+            getUI().ifPresent(ui -> ui.navigate("page-edit"));
+        });
+
         add(grid);
     }
 
@@ -90,33 +103,17 @@ public class PostsView extends Div implements AfterNavigationObserver {
 
         // Set some data when this view is displayed.
         List<Person> persons = Arrays.asList( //
-                createPerson("https://randomuser.me/api/portraits/men/42.jpg", "John Smith", "May 8",
+                new Person("https://randomuser.me/api/portraits/men/42.jpg", "John Smith", "May 8",
                         "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
                         "1K", "500", "20"),
-                createPerson("https://randomuser.me/api/portraits/women/42.jpg", "Abagail Libbie", "May 3",
+                new Person("https://randomuser.me/api/portraits/women/42.jpg", "Abagail Libbie", "May 3",
                         "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
                         "1K", "500", "20"),
-                createPerson("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
-
+                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
                         "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
                         "1K", "500", "20")
         );
 
         grid.setItems(persons);
     }
-
-    private static Person createPerson(String image, String name, String date, String post, String likes,
-            String comments, String shares) {
-        Person p = new Person();
-        p.setImage(image);
-        p.setName(name);
-        p.setDate(date);
-        p.setPost(post);
-        p.setLikes(likes);
-        p.setComments(comments);
-        p.setShares(shares);
-
-        return p;
-    }
-
 }

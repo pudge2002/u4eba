@@ -3,6 +3,7 @@ package com.example.application.views.account;
 import com.example.application.views.main.MainView;
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
+import com.example.application.views.posts.PostsView;
 import com.example.application.views.registration.RegistrationView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.Text;
@@ -26,7 +27,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 @PageTitle("Account")
 @Menu(icon = "line-awesome/svg/pencil-ruler-solid.svg", order = 5)
 @Route(value = "account")
-public class AccountView extends Composite<VerticalLayout>implements BeforeEnterObserver {
+public class AccountView extends Composite<VerticalLayout> implements BeforeEnterObserver {
     H1 h1 = new H1();
     public AccountView() {
         HorizontalLayout layoutRow = new HorizontalLayout();
@@ -62,11 +63,13 @@ public class AccountView extends Composite<VerticalLayout>implements BeforeEnter
         buttonSecondary.setText("Редактировать");
         buttonSecondary.getStyle().set("margin-top","20%");
         buttonSecondary.setWidth("min-content");
+
         getContent().setAlignSelf(FlexComponent.Alignment.CENTER, tabSheet);
         tabSheet.setWidth("min-content");
         tabSheet.getStyle().set("flex-grow", "1").set("width","100%");
+        tabSheet.setHeight("100%");
         setTabSheetSampleData(tabSheet);
-
+        getContent().setHeight("100%");
 
         getContent().add(layoutRow);
         layoutRow.add(layoutColumn2);
@@ -101,7 +104,7 @@ public class AccountView extends Composite<VerticalLayout>implements BeforeEnter
         }
     }
     private void setTabSheetSampleData(TabSheet tabSheet) {
-        Div postsDiv = new Div(new Text("Пока пусто"));
+        PostsView postsDiv = new PostsView();
         postsDiv.addClassName("custom-div");
         tabSheet.add("Посты", postsDiv);
 

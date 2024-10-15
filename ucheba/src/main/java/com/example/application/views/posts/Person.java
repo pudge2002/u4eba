@@ -2,15 +2,31 @@ package com.example.application.views.posts;
 
 public class Person {
 
-    private String image;
-    private String name;
-    private String date;
-    private String post;
-    private String likes;
-    private String comments;
-    private String shares;
+    private String id = "";
+    private String image= "";
+    private String name= "";
+    private String date= "";
+    private String post= "";
+    private String likes= "";
+    private String comments= "";
+    private String shares= "";
 
     public Person() {
+    }
+
+    public Person(String image, String name, String date, String post, String likes, String comments, String shares) {
+        this.id = "1";
+        this.image = image;
+        this.date = date;
+        this.name = name;
+        this.post = post;
+        this.likes = likes;
+        this.comments = comments;
+        this.shares = shares;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getImage() {
