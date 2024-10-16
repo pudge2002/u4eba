@@ -5,8 +5,9 @@ import com.example.application.views.navbars.mobileNav;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
@@ -70,6 +71,38 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
 
         getContent().add(layoutRow);
         layoutRow.add(layoutColumn2);
+        Button returnButton = new Button(VaadinIcon.ARROW_LEFT.create());
+        returnButton.addClickListener(event -> {
+            UI.getCurrent().navigate(AccountView.class);
+        });
+        H3 red = new H3("Редактирование");
+        Button saveButton = new Button(VaadinIcon.CHECK.create());
+        saveButton.addClickListener(event -> {
+            UI.getCurrent().navigate(AccountView.class);
+            //saveData();
+        });
+        HorizontalLayout hz = new HorizontalLayout(returnButton, red, saveButton);
+        saveButton.getStyle().set("margin-top", "0");
+        saveButton.getStyle().set("padding-top", "0");
+
+        saveButton.getStyle().set("background", "none");
+        saveButton.getStyle().set("border", "none");
+        saveButton.getStyle().set("padding", "0");
+        saveButton.getStyle().set("font-size", "20px");
+        saveButton.getStyle().set("color", "inherit");
+        saveButton.getStyle().set("cursor", "pointer");
+        saveButton.getStyle().set("text-decoration", "none");
+        returnButton.getStyle().set("margin-top", "0");
+        returnButton.getStyle().set("padding-top", "0");
+
+        returnButton.getStyle().set("background", "none");
+        returnButton.getStyle().set("border", "none");
+        returnButton.getStyle().set("padding", "0");
+        returnButton.getStyle().set("font-size", "20px");
+        returnButton.getStyle().set("color", "inherit");
+        returnButton.getStyle().set("cursor", "pointer");
+        returnButton.getStyle().set("text-decoration", "none");
+        layoutColumn2.add(hz);
         layoutColumn2.add(avatar);
 //        layoutColumn2.add(h2);
 //        layoutColumn2.add(h6);
