@@ -3,6 +3,7 @@ package com.example.application.views.main;
 import com.example.application.views.account.AccountView;
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
+import com.example.application.views.posts.PostView;
 import com.example.application.views.posts.PostsView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.Text;
@@ -30,7 +31,7 @@ public class MainView extends Composite<VerticalLayout> implements BeforeEnterOb
         getContent().setHeight("100%");
 
         tabSheet.setHeight("100%");
-        tabSheet.getStyle().set("background-color", "#E6E9ED");
+
 
         tabSheet.getChildren().forEach(child -> {
             child.getStyle().set("background-color", "white"); // Устанавливаем фон для внутренних элементов
@@ -46,25 +47,39 @@ public class MainView extends Composite<VerticalLayout> implements BeforeEnterOb
     private void setTabSheetSampleData(TabSheet tabSheet) {
         PostsView post = new PostsView();
         AccountView ac = new AccountView();
+        PostView post2 = new PostView();
+        PostView post3 = new PostView();
+        PostView post4 = new PostView();
+        PostView post5 = new PostView();
+        PostView post6 = new PostView();
+
+
+        post.setHeight("100%");
+
+        VerticalLayout layout = new VerticalLayout(post2,post3,post4,post5,post6);
+        layout.setSizeFull();
 
         tabSheet.add("Популярное", post);
-        tabSheet.add("Вопрос/ответ", ac);
+        tabSheet.add("Вопрос/ответ", layout);
     }
+
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         boolean isMobile = isMobileDevice();
         if (isMobile) {
             tabSheet.setWidth("100%");
-            tabSheet.getStyle().set("margin-left", "0");
+            tabSheet.getStyle().set("margin-left", "0").set("padding-left","0");
             tabSheet.addClassName("left-aligned");
             getContent().add(new mobileNav());
+            System.out.println("mobile");
 
         } else {
-            tabSheet.getStyle().set("margin-top", "20px");
+            tabSheet.getStyle().set("margin-top", "4%");
             tabSheet.setWidth("60%");
             tabSheet.getStyle().set("margin-left", "auto");
             tabSheet.getStyle().set("margin-right", "auto");
+            System.out.println("desk");
             getContent().add(new desktopNav());
         }
     }

@@ -111,6 +111,17 @@ public class PostsView extends Div implements AfterNavigationObserver {
                         "1K", "500", "20"),
                 new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
                         "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
+                        "1K", "500", "20"),
+                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
+                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
+                        "1K", "500", "20"),
+                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
+                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
+                        "1K", "500", "20"),
+                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
+                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
+                        "1K", "500", "20"),new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
+                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
                         "1K", "500", "20")
         );
 
