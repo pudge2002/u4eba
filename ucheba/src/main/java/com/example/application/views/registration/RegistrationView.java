@@ -8,6 +8,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
@@ -21,6 +22,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
+
+import java.util.Objects;
 
 @PageTitle("Registration")
 @Menu(icon = "line-awesome/svg/pencil-ruler-solid.svg", order = 3)
@@ -78,6 +81,9 @@ public class RegistrationView extends Composite<VerticalLayout> {
         buttonPrimary.setWidth("min-content");
         buttonPrimary.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonPrimary.addClassName("custom-button");
+        H4 errorMessage = new H4("Пароли не совпадают");
+        errorMessage.getStyle().set("color", "red");
+        errorMessage.setVisible(false);
 
         getContent().add(layoutRow);
         layoutRow.add(layoutColumn2);
@@ -93,15 +99,33 @@ public class RegistrationView extends Composite<VerticalLayout> {
         layoutColumn3.add(textField2);
         layoutColumn3.add(passwordField);
         layoutColumn3.add(passwordField2);
+        layoutColumn3.add(errorMessage);
         layoutColumn3.add(buttonPrimary);
 
         buttonPrimary.addClickListener(e -> {
-            String newUsername = "newuser232";
-            String newPassword = "newpassword3";
-            String email = "olyxandrey@2";
-            boolean isRegistered = controller.registerUser(newUsername, newPassword, email);
+            System.out.println("funk reg");
+            if(passwordField.getValue()!= null &&passwordField2.getValue()!= null &&textField.getValue()!=null&&textField2.getValue()!=null) {
+                System.out.println(passwordField.getValue() +" "+ passwordField2.getValue());
+                if (Objects.equals(passwordField.getValue(), passwordField2.getValue())) {
+                    boolean isRegistered = controller.registerUser(textField.getValue(), passwordField.getValue(), textField2.getValue());
+                    System.out.println(isRegistered);
+                    if (isRegistered) {
+                        UI.getCurrent().navigate(MainView.class);
+                    } else {
+                        errorMessage.setText("Ошибка подключения");
+                        errorMessage.setVisible(true);
+                        System.out.println("error");
+                    }
+                } else {
+                    errorMessage.setVisible(true);
+                }
+            }
+            else {
+                errorMessage.setText("Введите все данные");
+                errorMessage.setVisible(true);
+                System.out.println("error2");
+            }
 
-            UI.getCurrent().navigate(MainView.class);
 
         });
     }

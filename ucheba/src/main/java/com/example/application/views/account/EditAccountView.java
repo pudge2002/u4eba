@@ -2,6 +2,7 @@ package com.example.application.views.account;
 
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
+import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -28,6 +29,7 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
     H1 h1 = new H1();
     String user = "Menshev";
     String aboutus = "student";
+    private String selectedColor = "#ff0000"; // Переменная для сохранения цвета
     public EditAccountView() {
         HorizontalLayout layoutRow = new HorizontalLayout();
         VerticalLayout layoutColumn2 = new VerticalLayout();
@@ -53,6 +55,7 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         avatar.setName(user);
         avatar.setWidth("150px");
         avatar.setHeight("150px");
+        avatar.getStyle().set("background-color", selectedColor);
         h2.setText("Menshev");
         h2.setWidth("max-content");
         h6.setText("student");
@@ -72,6 +75,7 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         H3 red = new H3("Редактирование");
         Button saveButton = new Button(VaadinIcon.CHECK.create());
         saveButton.addClickListener(event -> {
+            System.out.println(getSelectedColor() );
             UI.getCurrent().navigate(AccountView.class);
             //saveData();
         });
@@ -134,24 +138,38 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
             const colorPicker = document.createElement('input');
             colorPicker.type = 'color';
             colorPicker.value = '#ff0000';
+            colorPicker.style.position = 'fixed';
+            colorPicker.style.top = '50%';
+            colorPicker.style.left = '50%';
+            colorPicker.style.transform = 'translate(-50%, -50%)';
+            colorPicker.style.zIndex = '1000';
+            colorPicker.style.display = 'none';
             colorPicker.addEventListener('input', (event) => {
                 avatarElement.style.backgroundColor = event.target.value;
+                window.selectedColor = event.target.value; // Сохраняем цвет в переменную
+                $0.$server.updateSelectedColor(window.selectedColor); // Вызываем серверный метод для обновления цвета
             });
             colorPickerContainer.appendChild(colorPicker);
 
             avatarElement.addEventListener('click', () => {
-                colorPickerContainer.style.display = 'block';
+                colorPicker.style.display = 'block';
                 colorPicker.click();
             });
 
             colorPicker.addEventListener('change', () => {
-                colorPickerContainer.style.display = 'none';
+                colorPicker.style.display = 'none';
             });
-        """);
+
+            document.addEventListener('click', (event) => {
+                if (!colorPickerContainer.contains(event.target) && event.target !== avatarElement) {
+                    colorPicker.style.display = 'none';
+                }
+            });
+        """, getElement());
 
         layoutColumn2.add(colorPickerContainer);
 
-        // Добавляем класс для стилизации
+
         addClassName("main-content");
     }
 
@@ -170,5 +188,21 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
             String userAgent = session.getBrowser().getBrowserApplication();
             return userAgent.contains("Mobile") || userAgent.contains("Android") || userAgent.contains("iPhone");
         }
+    }
+    // Метод для получения сохраненного цвета
+    public String getSelectedColor() {
+        return selectedColor;
+    }
+
+    // Метод для установки сохраненного цвета
+    public void setSelectedColor(String color) {
+        this.selectedColor = color;
+    }
+
+    // Серверный метод для обновления цвета
+    @ClientCallable
+    public void updateSelectedColor(String color) {
+        setSelectedColor(color);
+        System.out.println("Selected color updated to: " + color);
     }
 }
