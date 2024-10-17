@@ -1,5 +1,6 @@
 package com.example.application.views.registration;
 
+import com.example.application.Model.UserController;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
@@ -25,7 +26,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 @Menu(icon = "line-awesome/svg/pencil-ruler-solid.svg", order = 3)
 @Route(value = "registration")
 public class RegistrationView extends Composite<VerticalLayout> {
-
+    UserController controller = new UserController();
     public RegistrationView() {
         HorizontalLayout layoutRow = new HorizontalLayout();
         VerticalLayout layoutColumn2 = new VerticalLayout();
@@ -95,8 +96,13 @@ public class RegistrationView extends Composite<VerticalLayout> {
         layoutColumn3.add(buttonPrimary);
 
         buttonPrimary.addClickListener(e -> {
+            String newUsername = "newuser232";
+            String newPassword = "newpassword3";
+            String email = "olyxandrey@2";
+            boolean isRegistered = controller.registerUser(newUsername, newPassword, email);
 
             UI.getCurrent().navigate(MainView.class);
+
         });
     }
 }
