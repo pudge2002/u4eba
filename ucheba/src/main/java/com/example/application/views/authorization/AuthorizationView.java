@@ -27,7 +27,7 @@ import com.vaadin.flow.component.UI;
 @Menu(icon = "line-awesome/svg/pencil-ruler-solid.svg", order = 2)
 @Route(value = "")
 public class AuthorizationView extends Composite<VerticalLayout> {
-
+    UserController controller = new UserController();
     public AuthorizationView() {
         HorizontalLayout layoutRow = new HorizontalLayout();
         HorizontalLayout layoutRow2 = new HorizontalLayout();
@@ -101,11 +101,12 @@ public class AuthorizationView extends Composite<VerticalLayout> {
         layoutColumn2.add(buttonTertiary);
 
         buttonPrimary.addClickListener(e -> {
-            UserAuthentication auth = new UserAuthentication();
+
+            //UserController controller = new UserController();
             String username = textField.getValue();
             String password = passwordField.getValue();
-
-            if (auth.authenticate(username, password))
+            boolean isAuthenticated = controller.authenticateUser(username, password);
+            if (isAuthenticated)
                 UI.getCurrent().navigate(MainView.class);
             else {textField.getStyle().set("Color","red");
                     errorMessage.setVisible(true);}

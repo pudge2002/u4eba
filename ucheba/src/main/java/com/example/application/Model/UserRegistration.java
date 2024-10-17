@@ -17,8 +17,8 @@ public class UserRegistration {
 
     public boolean register(String username, String password, String email) {
         String query = "INSERT INTO users (username, password_hash, email) VALUES (?, ?, ?)";
-        try (Connection connection = dbConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = dbConnection.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
@@ -29,19 +29,6 @@ public class UserRegistration {
         } catch (SQLException e) {
             System.err.println("Ошибка при регистрации пользователя: " + e.getMessage());
             return false;
-        }
-    }
-
-    public static void main(String[] args) {
-        UserRegistration registration = new UserRegistration();
-        String username = "newuser23";
-        String password = "newpassword";
-        String email = "olyxandrey@";
-
-        if (registration.register(username, password, email)) {
-            System.out.println("Регистрация успешна!");
-        } else {
-            System.out.println("Регистрация не удалась.");
         }
     }
 }

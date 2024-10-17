@@ -20,8 +20,8 @@ public class UserAuthentication {
 
     public boolean authenticate(String username, String password) {
         String query = "SELECT * FROM users WHERE username = ? AND password_hash = ?";
-        try (Connection connection = dbConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = dbConnection.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
@@ -32,17 +32,6 @@ public class UserAuthentication {
         } catch (SQLException e) {
             System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
             return false;
-        }
-    }
-
-    public static void main(String[] args) {
-        UserAuthentication auth = new UserAuthentication();
-        String username = "newuser";
-        String password = "hashed_password";
-        if (auth.authenticate(username, password)) {
-            System.out.println("Аутентификация успешна!");
-        } else {
-            System.out.println("Аутентификация не удалась.");
         }
     }
 }
