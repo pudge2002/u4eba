@@ -93,6 +93,7 @@ public class AccountView extends Composite<VerticalLayout> implements BeforeEnte
         if (isMobile) {
             getContent().add(new mobileNav());
         } else {
+
             getContent().add(new desktopNav());
         }
     }

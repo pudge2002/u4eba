@@ -7,7 +7,7 @@ import com.example.application.views.registration.RegistrationView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
@@ -32,8 +32,7 @@ public class AuthorizationView extends Composite<VerticalLayout> {
         HorizontalLayout layoutRow = new HorizontalLayout();
         HorizontalLayout layoutRow2 = new HorizontalLayout();
         VerticalLayout layoutColumn2 = new VerticalLayout();
-        H1 h1 = new H1();
-        TextField textField = new TextField();
+        H1 h1 = new H1();        TextField textField = new TextField();
         PasswordField passwordField = new PasswordField();
         Button buttonPrimary = new Button();
         Button buttonTertiary = new Button();
@@ -66,10 +65,8 @@ public class AuthorizationView extends Composite<VerticalLayout> {
         textField.setLabel("Логин");
         textField.setWidth("min-content");
 
-
         passwordField.setLabel("Пароль");
         passwordField.setWidth("min-content");
-
 
         buttonPrimary.setText("Войти");
         buttonPrimary.setWidth("min-content");
@@ -81,14 +78,14 @@ public class AuthorizationView extends Composite<VerticalLayout> {
         buttonTertiary.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         buttonTertiary.addClassName("second-button");
 
-
         StreamResource image = new StreamResource("logo.png",
                 () -> getClass().getResourceAsStream("/images/logo.png"));
         Image logo = new Image(image,"ucheba logo");
         logo.setWidth("200px");
         logo.setHeight("200px");
 
-        H2 errorMessage = new H2("Неверный логин или пароль");
+        H4 errorMessage = new H4("Неверный логин или пароль");
+        errorMessage.getStyle().set("color", "red");
         errorMessage.setVisible(false);
         getContent().add(layoutRow);
         layoutRow.add(layoutRow2);
@@ -97,19 +94,24 @@ public class AuthorizationView extends Composite<VerticalLayout> {
         layoutColumn2.add(logo);
         layoutColumn2.add(textField);
         layoutColumn2.add(passwordField);
+        layoutColumn2.add(errorMessage);
         layoutColumn2.add(buttonPrimary);
         layoutColumn2.add(buttonTertiary);
 
         buttonPrimary.addClickListener(e -> {
 
-            //UserController controller = new UserController();
             String username = textField.getValue();
             String password = passwordField.getValue();
             boolean isAuthenticated = controller.authenticateUser(username, password);
-            if (isAuthenticated)
+            if (isAuthenticated) {
                 UI.getCurrent().navigate(MainView.class);
-            else {textField.getStyle().set("Color","red");
-                    errorMessage.setVisible(true);}
+                System.out.println("norm");
+            }
+            else {
+                    errorMessage.setVisible(true);
+                System.out.println("error");
+            }
+
         });
         buttonTertiary.addClickListener(e -> {
 

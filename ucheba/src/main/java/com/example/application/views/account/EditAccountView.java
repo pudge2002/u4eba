@@ -18,6 +18,7 @@ import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.server.VaadinSession;
+
 //import com.vaadin.flow.component.orderedlayout.FlexLayout.Gap;
 
 @PageTitle("edAccount")
@@ -34,14 +35,12 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         H2 h2 = new H2();
         H6 h6 = new H6();
         Button buttonSecondary = new Button();
-        TabSheet tabSheet = new TabSheet();
+
 
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
         getContent().setJustifyContentMode(JustifyContentMode.CENTER);
         getContent().setAlignItems(Alignment.CENTER);
-        h1.setText("Обложка");
-        h1.setWidth("max-content");
         layoutRow.setWidthFull();
         getContent().setFlexGrow(1.0, layoutRow);
 
@@ -62,15 +61,10 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         buttonSecondary.getStyle().set("margin-top", "20%");
         buttonSecondary.setWidth("min-content");
 
-        getContent().setAlignSelf(Alignment.CENTER, tabSheet);
-        tabSheet.setWidth("min-content");
-        tabSheet.getStyle().set("flex-grow", "1").set("width", "100%");
-        tabSheet.setHeight("100%");
 
         getContent().setHeight("100%");
 
-        getContent().add(layoutRow);
-        layoutRow.add(layoutColumn2);
+
         Button returnButton = new Button(VaadinIcon.ARROW_LEFT.create());
         returnButton.addClickListener(event -> {
             UI.getCurrent().navigate(AccountView.class);
@@ -82,6 +76,7 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
             //saveData();
         });
         HorizontalLayout hz = new HorizontalLayout(returnButton, red, saveButton);
+        hz.setWidth("100%");
         saveButton.getStyle().set("margin-top", "0");
         saveButton.getStyle().set("padding-top", "0");
 
@@ -102,12 +97,17 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         returnButton.getStyle().set("color", "inherit");
         returnButton.getStyle().set("cursor", "pointer");
         returnButton.getStyle().set("text-decoration", "none");
-        layoutColumn2.add(hz);
-        layoutColumn2.add(avatar);
+        hz.getStyle().set("justify-content", "space-between"); // Кнопки по краям
+        hz.getStyle().set("align-items", "center"); // Вертикальное выравнивание по центру
+        getContent().add(hz);
+
+        getContent().add(avatar);
+
 //        layoutColumn2.add(h2);
 //        layoutColumn2.add(h6);
         layoutRow.getStyle().set("width", "90%");
-
+        getContent().add(layoutRow);
+        layoutRow.add(layoutColumn2);
 
         TextField userName = new TextField("Изменить имя");
         TextField about = new TextField("Описание профиля");
@@ -115,11 +115,44 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         userName.setPlaceholder(user);
         about.setPlaceholder(aboutus);
         about.getStyle().set("width","300px").setHeight("300px");
-        layoutColumn2.add(userName);
-        layoutColumn2.add(about);
+        getContent().add(userName);
+        getContent().add(about);
+
+        Div colorPickerContainer = new Div();
+        colorPickerContainer.setId("color-picker-container");
+        colorPickerContainer.getStyle().set("position", "fixed");
+        colorPickerContainer.getStyle().set("top", "50%");
+        colorPickerContainer.getStyle().set("left", "50%");
+        colorPickerContainer.getStyle().set("transform", "translate(-50%, -50%)");
+        colorPickerContainer.getStyle().set("z-index", "1000");
+        colorPickerContainer.getStyle().set("display", "none"); // Скрываем пикер по умолчанию
+
+        // Добавляем JavaScript для цветового пикера
+        getElement().executeJs("""
+            const avatarElement = document.querySelector('vaadin-avatar');
+            const colorPickerContainer = document.getElementById('color-picker-container');
+            const colorPicker = document.createElement('input');
+            colorPicker.type = 'color';
+            colorPicker.value = '#ff0000';
+            colorPicker.addEventListener('input', (event) => {
+                avatarElement.style.backgroundColor = event.target.value;
+            });
+            colorPickerContainer.appendChild(colorPicker);
+
+            avatarElement.addEventListener('click', () => {
+                colorPickerContainer.style.display = 'block';
+                colorPicker.click();
+            });
+
+            colorPicker.addEventListener('change', () => {
+                colorPickerContainer.style.display = 'none';
+            });
+        """);
+
+        layoutColumn2.add(colorPickerContainer);
 
         // Добавляем класс для стилизации
-        getContent().addClassName("main-content");
+        addClassName("main-content");
     }
 
     @Override
