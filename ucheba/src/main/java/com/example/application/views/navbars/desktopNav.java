@@ -22,22 +22,10 @@ import com.vaadin.flow.router.RouterLink;
 import javax.swing.*;
 
 @Route("app-layout-navbar-placement")
-public class desktopNav extends AppLayout {
+public class desktopNav extends HorizontalLayout {
 
     public desktopNav() {
-        DrawerToggle toggle = new DrawerToggle();
-
-        H1 title = new H1("ucheba");
-        title.getStyle().set("font-size", "var(--lumo-font-size-l)")
-                .set("margin", "0");
-
-        VerticalLayout nav = getNavigation();
-
-        Scroller scroller = new Scroller(nav);
-        scroller.setClassName(LumoUtility.Padding.SMALL);
-
-        addToDrawer(scroller);
-        addToNavbar(toggle, title);
+        add(getNavigation());
     }
 
     private VerticalLayout getNavigation() {
@@ -80,6 +68,4 @@ public class desktopNav extends AppLayout {
 
         return linkLayout;
     }
-
-
 }

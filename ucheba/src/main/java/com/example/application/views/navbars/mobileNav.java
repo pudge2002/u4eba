@@ -14,13 +14,15 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-@Route("app-layout-bottom-navbar")
+
 // tag::snippet[]
-public class mobileNav extends AppLayout {
+public class mobileNav extends HorizontalLayout {
 
     public mobileNav() {
-        HorizontalLayout nav = getNavigation();
-        addToNavbar(true, nav);
+        setWidthFull();
+//        getStyle().set("bottom", "0");
+//        getStyle().set("position", "fixed");
+        add(getNavigation());
     }
 
     private HorizontalLayout getNavigation() {

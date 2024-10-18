@@ -1,5 +1,6 @@
 package com.example.application.views.posts;
 
+import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
@@ -18,16 +19,20 @@ import java.util.List;
 @PageTitle("Posts")
 @Menu(icon = "line-awesome/svg/list-solid.svg", order = 4)
 @Route(value = "posts")
-public class PostsView extends Div implements AfterNavigationObserver {
+public class PostsView extends Composite<VerticalLayout> {
 
     Grid<Person> grid = new Grid<>();
 
     public PostsView() {
+
+        afterNavigation();
+
         addClassName("posts-view");
-        setSizeFull();
+        getContent().setSizeFull();
 
         getStyle().set("margin", "0");
         getStyle().set("padding", "0");
+        getContent().setMinHeight("100px");
 
         grid.setHeight("100%");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS);
@@ -43,7 +48,7 @@ public class PostsView extends Div implements AfterNavigationObserver {
             getUI().ifPresent(ui -> ui.navigate("page-edit"));
         });
 
-        add(grid);
+        getContent().add(grid);
     }
 
     private HorizontalLayout createCard(Person person) {
@@ -73,33 +78,33 @@ public class PostsView extends Div implements AfterNavigationObserver {
         Span post = new Span(person.getPost());
         post.addClassName("post");
 
-        HorizontalLayout actions = new HorizontalLayout();
-        actions.addClassName("actions");
-        actions.setSpacing(false);
-        actions.getThemeList().add("spacing-s");
+//        HorizontalLayout actions = new HorizontalLayout();
+//        actions.addClassName("actions");
+//        actions.setSpacing(false);
+//        actions.getThemeList().add("spacing-s");
+//
+//        Icon likeIcon = VaadinIcon.HEART.create();
+//        likeIcon.addClassName("icon");
+//        Span likes = new Span(person.getLikes());
+//        likes.addClassName("likes");
+//        Icon commentIcon = VaadinIcon.COMMENT.create();
+//        commentIcon.addClassName("icon");
+//        Span comments = new Span(person.getComments());
+//        comments.addClassName("comments");
+//        Icon shareIcon = VaadinIcon.CONNECT.create();
+//        shareIcon.addClassName("icon");
+//        Span shares = new Span(person.getShares());
+//        shares.addClassName("shares");
+//
+//        actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
 
-        Icon likeIcon = VaadinIcon.HEART.create();
-        likeIcon.addClassName("icon");
-        Span likes = new Span(person.getLikes());
-        likes.addClassName("likes");
-        Icon commentIcon = VaadinIcon.COMMENT.create();
-        commentIcon.addClassName("icon");
-        Span comments = new Span(person.getComments());
-        comments.addClassName("comments");
-        Icon shareIcon = VaadinIcon.CONNECT.create();
-        shareIcon.addClassName("icon");
-        Span shares = new Span(person.getShares());
-        shares.addClassName("shares");
-
-        actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
-
-        description.add(header, post, actions);
+        description.add(header, post);
         card.add(image, description);
         return card;
     }
 
-    @Override
-    public void afterNavigation(AfterNavigationEvent event) {
+
+    public void afterNavigation() {
 
         // Set some data when this view is displayed.
         List<Person> persons = Arrays.asList( //
@@ -120,7 +125,8 @@ public class PostsView extends Div implements AfterNavigationObserver {
                         "1K", "500", "20"),
                 new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
                         "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
-                        "1K", "500", "20"),new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
+                        "1K", "500", "20"),
+                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
                         "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
                         "1K", "500", "20")
         );
