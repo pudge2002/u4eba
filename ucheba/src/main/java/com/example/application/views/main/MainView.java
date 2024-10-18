@@ -73,7 +73,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         addPost.getStyle().set("align-items", "center");
         addPost.getStyle().set("justify-content", "center");
 
-        content.add(addPost);
+       // content.add(addPost);
 
         return content;
     }
