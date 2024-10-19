@@ -1,5 +1,7 @@
 package com.example.application.views.pageeditor;
 
+import com.example.application.Model.DatabaseService;
+import com.example.application.Model.Post;
 import com.example.application.views.account.AccountView;
 import com.example.application.views.posts.Person;
 import com.vaadin.flow.component.AttachEvent;
@@ -19,6 +21,8 @@ import com.vaadin.flow.router.*;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.server.VaadinSession;
 
+import java.sql.SQLException;
+
 
 @PageTitle("Page Editor")
 @Menu(icon = "line-awesome/svg/edit.svg", order = 1)
@@ -27,7 +31,7 @@ public class PageEditorPage extends Composite<VerticalLayout> {
 
     Person person = new Person();
     Span personName = new Span("");
-
+    DatabaseService db = new DatabaseService();
     TextField title = new TextField();
     TextArea text = new TextArea();
 
@@ -115,7 +119,13 @@ public class PageEditorPage extends Composite<VerticalLayout> {
         Button saveButton = new Button(VaadinIcon.CHECK.create());
         saveButton.addClickListener(event -> {
             UI.getCurrent().navigate(AccountView.class);
-            //saveData();
+
+            Post pt = new Post(4, text.getValue(), title.getValue());
+            try {
+                db.savePost(pt, null);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         saveButton.getStyle().set("margin-top", "0");

@@ -1,19 +1,18 @@
 package com.example.application.views.posts;
 
+import com.example.application.Model.DatabaseService;
+import com.example.application.Model.Post;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
 
-import java.util.Arrays;
+import java.sql.SQLException;
 import java.util.List;
 
 @PageTitle("Posts")
@@ -21,9 +20,9 @@ import java.util.List;
 @Route(value = "posts")
 public class PostsView extends Composite<VerticalLayout> {
 
-    Grid<Person> grid = new Grid<>();
-
-    public PostsView() {
+    Grid<Post> grid = new Grid<>();
+    DatabaseService db = new DatabaseService();
+    public PostsView() throws SQLException {
 
         afterNavigation();
 
@@ -43,39 +42,38 @@ public class PostsView extends Composite<VerticalLayout> {
         grid.getStyle().set("background-color", "#E6E9ED");
 
         grid.addItemClickListener(event -> {
-            Person person = event.getItem();
-            VaadinSession.getCurrent().setAttribute("person", person);
+            Post person = event.getItem();
+            VaadinSession.getCurrent().setAttribute("post", person);
             getUI().ifPresent(ui -> ui.navigate("page-edit"));
         });
 
         getContent().add(grid);
     }
 
-    private HorizontalLayout createCard(Person person) {
-        HorizontalLayout card = new HorizontalLayout();
-        card.addClassName("card");
-        card.setSpacing(false);
-        card.getThemeList().add("spacing-s");
+    private HorizontalLayout createCard(Post person) {
 
-        Image image = new Image();
-        image.setSrc(person.getImage());
         VerticalLayout description = new VerticalLayout();
         description.addClassName("description");
         description.setSpacing(false);
         description.setPadding(false);
+
+        HorizontalLayout card = new HorizontalLayout();
+        card.addClassName("card");
+        card.setSpacing(false);
+        card.getThemeList().add("spacing-s");
 
         HorizontalLayout header = new HorizontalLayout();
         header.addClassName("header");
         header.setSpacing(false);
         header.getThemeList().add("spacing-s");
 
-        Span name = new Span(person.getName());
+        Span name = new Span(person.getHeading());
         name.addClassName("name");
-        Span date = new Span(person.getDate());
+        Span date = new Span(String.valueOf(person.getCreatedAt()));
         date.addClassName("date");
         header.add(name, date);
 
-        Span post = new Span(person.getPost());
+        Span post = new Span(person.getContent());
         post.addClassName("post");
 
 //        HorizontalLayout actions = new HorizontalLayout();
@@ -99,37 +97,15 @@ public class PostsView extends Composite<VerticalLayout> {
 //        actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
 
         description.add(header, post);
-        card.add(image, description);
+        card.add(description);
         return card;
     }
 
 
-    public void afterNavigation() {
+    public void afterNavigation() throws SQLException {
 
         // Set some data when this view is displayed.
-        List<Person> persons = Arrays.asList( //
-                new Person("https://randomuser.me/api/portraits/men/42.jpg", "John Smith", "May 8",
-                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
-                        "1K", "500", "20"),
-                new Person("https://randomuser.me/api/portraits/women/42.jpg", "Abagail Libbie", "May 3",
-                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
-                        "1K", "500", "20"),
-                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
-                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
-                        "1K", "500", "20"),
-                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
-                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
-                        "1K", "500", "20"),
-                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
-                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
-                        "1K", "500", "20"),
-                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
-                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
-                        "1K", "500", "20"),
-                new Person("https://randomuser.me/api/portraits/men/24.jpg", "Alberto Raya", "May 3",
-                        "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content (also called greeking).",
-                        "1K", "500", "20")
-        );
+        List<Post> persons = db.getAllPosts();
 
         grid.setItems(persons);
     }

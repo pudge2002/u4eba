@@ -11,49 +11,65 @@ import java.util.List;
 public class DatabaseService {
     private Connect_to_DataBase dbConnection;
 
-    public DatabaseService(){
+    public DatabaseService() {
         try {
             dbConnection = Connect_to_DataBase.getInstance();
         } catch (SQLException e) {
             System.err.println("Ошибка при подключении к базе данных: " + e.getMessage());
         }
     }
+
     public List<Post> getAllPosts() throws SQLException {
         List<Post> posts = new ArrayList<>();
         String sql = "SELECT * FROM posts";
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = dbConnection.getConnection();
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
 
             while (rs.next()) {
                 int id = rs.getInt("id");
                 int userId = rs.getInt("user_id");
                 String content = rs.getString("content");
+                String heading = rs.getString("heading");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
-                posts.add(new Post(id, userId, content, createdAt));
+                posts.add(new Post(userId, content, heading, createdAt));
             }
+            return posts;
+        } catch (SQLException e) {
+            // Обработка исключения
+            throw e;
         }
-        return posts;
     }
 
     public void savePost(Post post, List<Media> mediaList) throws SQLException {
-        String sql = "INSERT INTO posts (user_id, content, created_at) VALUES (?, ?, ?)";
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO posts (user_id, content, heading) VALUES (?, ?, ?)";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet generatedKeys = null;
+
+        try {
+            conn = dbConnection.getConnection();
+            stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
             stmt.setInt(1, post.getUserId());
             stmt.setString(2, post.getContent());
-            stmt.setTimestamp(3, Timestamp.valueOf(post.getCreatedAt()));
+            stmt.setString(3, post.getHeading());
             stmt.executeUpdate();
 
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int postId = generatedKeys.getInt(1);
-                    if (mediaList != null && !mediaList.isEmpty()) {
-                        saveMedia(postId, mediaList);
-                    }
+            generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int postId = generatedKeys.getInt(1);
+                if (mediaList != null && !mediaList.isEmpty()) {
+                    saveMedia(postId, mediaList);
                 }
             }
+        } catch (SQLException e) {
+            throw e;
         }
     }
 
@@ -92,4 +108,15 @@ public class DatabaseService {
         }
         return mediaList;
     }
+
+    public static void main(String[] args) throws SQLException {
+        DatabaseService db = new DatabaseService();
+        Post pt = new Post(1, "Привет2!", "Олух");
+        db.savePost(pt, null);
+        System.out.println(db.getAllPosts().toString());
+        pt = new Post(1, "Привет23!", "Дима пи...");
+        db.savePost(pt, null);
+        System.out.println(db.getAllPosts().toString());
+    }
+
 }

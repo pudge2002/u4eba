@@ -28,6 +28,8 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 
+import java.sql.SQLException;
+
 @PageTitle("Account")
 @Menu(icon = "line-awesome/svg/pencil-ruler-solid.svg", order = 5)
 @Route(value = "account")
@@ -35,7 +37,7 @@ public class AccountView extends AppLayout implements BeforeEnterObserver {
     H1 h1 = new H1();
     HorizontalLayout Navbar;
 
-    public AccountView() {
+    public AccountView() throws SQLException {
         VerticalLayout content = CreateContent();
         content.setSizeFull();
         setContent(content);
@@ -45,7 +47,7 @@ public class AccountView extends AppLayout implements BeforeEnterObserver {
 //        addToNavbar(true, Navbar);
     }
 
-    private VerticalLayout CreateContent() {
+    private VerticalLayout CreateContent() throws SQLException {
         VerticalLayout content = new VerticalLayout();
 
         HorizontalLayout layoutRow = new HorizontalLayout();
@@ -147,7 +149,7 @@ public class AccountView extends AppLayout implements BeforeEnterObserver {
     }
 
 
-    private void setTabSheetSampleData(TabSheet tabSheet) {
+    private void setTabSheetSampleData(TabSheet tabSheet) throws SQLException {
         PostsView postsDiv = new PostsView();
         postsDiv.addClassName("custom-div");
         tabSheet.add("Посты", postsDiv);

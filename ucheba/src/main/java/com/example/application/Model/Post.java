@@ -7,12 +7,30 @@ public class Post {
     private int userId;
     private String content;
     private LocalDateTime createdAt;
+    private String heading;
 
-    public Post(int id, int userId, String content, LocalDateTime createdAt) {
-        this.id = id;
+    public Post(int userId, String content, String heading) {
         this.userId = userId;
         this.content = content;
+        this.heading = heading;
+    }
+
+    public Post(int userId, String content, String heading, LocalDateTime createdAt) {
+        this.userId = userId;
+        this.heading = heading;
         this.createdAt = createdAt;
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", heading=" + heading +
+                ", content='" + content + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 
     public Post() {
@@ -21,6 +39,14 @@ public class Post {
 
     public int getId() {
         return id;
+    }
+
+    public String getHeading() {
+        return heading;
+    }
+
+    public void setHeading(String heading) {
+        this.heading = heading;
     }
 
     public void setId(int id) {

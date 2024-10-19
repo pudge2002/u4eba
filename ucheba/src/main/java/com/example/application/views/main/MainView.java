@@ -25,6 +25,8 @@ import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
+import java.sql.SQLException;
+
 @PageTitle("Main")
 @Menu(icon = "line-awesome/svg/pencil-ruler-solid.svg", order = 0)
 @Route(value = "main")
@@ -33,7 +35,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
     TabSheet tabSheet = new TabSheet();
     HorizontalLayout Navbar;
 
-    public MainView() {
+    public MainView() throws SQLException {
 
         VerticalLayout content = CreateContent();
         content.setSizeFull();
@@ -42,7 +44,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         CreateNavbar();
     }
 
-    private VerticalLayout CreateContent() {
+    private VerticalLayout CreateContent() throws SQLException {
         VerticalLayout content = new VerticalLayout();
 
         setTabSheetSampleData();
@@ -73,12 +75,12 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         addPost.getStyle().set("align-items", "center");
         addPost.getStyle().set("justify-content", "center");
 
-       // content.add(addPost);
+        content.add(addPost);
 
         return content;
     }
 
-    private void setTabSheetSampleData() {
+    private void setTabSheetSampleData() throws SQLException {
         PostsView post = new PostsView();
         AccountView ac = new AccountView();
         PostView post2 = new PostView();
