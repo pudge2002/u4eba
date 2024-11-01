@@ -1,5 +1,8 @@
 package com.example.application.Model;
 
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Post {
@@ -34,7 +37,11 @@ public class Post {
     }
 
     public Post() {
-        // Пустой конструктор для формы
+        id = 0;
+        userId = 0;
+        content = "null";
+        createdAt = LocalDateTime.now();
+        heading = "null";
     }
 
     public int getId() {
@@ -75,5 +82,9 @@ public class Post {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getUserName(){
+        return ((Integer)id).toString();
     }
 }

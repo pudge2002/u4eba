@@ -1,5 +1,6 @@
 package com.example.application.views.main;
 
+import com.example.application.Model.Post;
 import com.example.application.views.account.AccountView;
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
@@ -35,7 +36,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
     TabSheet tabSheet = new TabSheet();
     HorizontalLayout Navbar;
 
-    public MainView() throws SQLException {
+    public MainView() {
 
         VerticalLayout content = CreateContent();
         content.setSizeFull();
@@ -44,7 +45,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         CreateNavbar();
     }
 
-    private VerticalLayout CreateContent() throws SQLException {
+    private VerticalLayout CreateContent(){
         VerticalLayout content = new VerticalLayout();
 
         setTabSheetSampleData();
@@ -56,8 +57,8 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
 
         Button addPost = new Button(VaadinIcon.PLUS.create());
         addPost.addClickListener(event -> {
-            Person person = new Person("", "me","","","","","");
-            VaadinSession.getCurrent().setAttribute("person", person);
+            Post post = new Post(0,"","");
+            VaadinSession.getCurrent().setAttribute("post", post);
             getUI().ifPresent(ui -> ui.navigate("page-edit"));
         });
 
@@ -80,9 +81,9 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         return content;
     }
 
-    private void setTabSheetSampleData() throws SQLException {
-        PostsView post = new PostsView();
-        AccountView ac = new AccountView();
+    private void setTabSheetSampleData() {
+        PostsView post = new PostsView("post-open");
+       // AccountView ac = new AccountView();
         PostView post2 = new PostView();
         PostView post3 = new PostView();
         PostView post4 = new PostView();

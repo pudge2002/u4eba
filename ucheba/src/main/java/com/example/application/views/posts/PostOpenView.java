@@ -1,69 +1,73 @@
-package com.example.application.views.pageeditor;
+package com.example.application.views.posts;
 
 import com.example.application.Model.DatabaseService;
 import com.example.application.Model.Post;
 import com.example.application.views.account.AccountView;
-import com.example.application.views.posts.Person;
+import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.Menu;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 
-import java.sql.SQLException;
-import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
-@PageTitle("Page Editor")
+@PageTitle("Post Open")
 @Menu(icon = "line-awesome/svg/edit.svg", order = 1)
-@Route("page-edit")
-public class PageEditorPage extends Composite<VerticalLayout> {
+@Route("post-open")
+public class PostOpenView extends Composite<VerticalLayout> {
 
     Post post = new Post();
     Span personName = new Span("");
     DatabaseService db = new DatabaseService();
-    TextField title = new TextField();
-    TextArea text = new TextArea();
+    H2 title = new H2();
+    Paragraph text = new Paragraph();
 
-    PageEditorPage(){
+    PostOpenView(){
         getContent().setWidthFull();
         getContent().getStyle().set("overflow-y", "auto");
 
         HorizontalLayout header = getHeader();
         getContent().add(header);
 
-        title.setPlaceholder("Заголовок");
         title.setWidthFull();
         title.getStyle().set("font-size", "30px");
+        // title.getStyle().set("background-color", "#E6E9ED");
         getContent().add(title);
 
-        text.setPlaceholder("Начните писать ваш пост...");
         text.setMinHeight("100px");
         text.setWidthFull();
-        //text.setHeight("auto"); // Отключаем фиксированную высоту
-        //text.getStyle().set("resize", "none");
+      //  text.getStyle().set("background-color", "#E6E9ED");
         getContent().add(text);
 
-//        MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
+//        String fileName = "example.txt";
+//        String fileContent = "This is an example file.";
+//        InputStream inputStream = new ByteArrayInputStream(fileContent.getBytes());
 //
-//        // Создаем компонент загрузки файлов
-//        Upload upload = new Upload(buffer);
-//        upload.setMaxFiles(10); // Устанавливаем максимальное количество файлов
-//        //upload.setAcceptedFileTypes("image/*", ".doc", ".docx", ".pdf"); // Устанавливаем допустимые типы файлов
+//        // Создаем StreamResource для файла
+//        StreamResource resource = new StreamResource(fileName, () -> inputStream);
 //
-//        getContent().add(upload);
+//        // Создаем компонент Anchor для скачивания файла
+//        Anchor downloadLink = new Anchor(resource, "Download " + fileName);
+//
+//        // Добавляем компонент Anchor в макет
+//        getContent().add(downloadLink);
     }
 
     @Override
@@ -72,8 +76,8 @@ public class PageEditorPage extends Composite<VerticalLayout> {
         post = (Post) VaadinSession.getCurrent().getAttribute("post");
 
         personName.setText(post.getUserName());
-        title.setValue(post.getHeading());
-        text.setValue(post.getContent());
+        title.setText(post.getHeading());
+        text.setText(post.getContent());
 //        if (person != null) {
 //            // Отобразите данные Person в форме редактирования
 //            getContent().add(new Div("Editing: " + person.getName()));
@@ -90,7 +94,7 @@ public class PageEditorPage extends Composite<VerticalLayout> {
 
         Button returnButton = new Button(VaadinIcon.ARROW_LEFT.create());
         returnButton.addClickListener(event -> {
-            UI.getCurrent().navigate(AccountView.class);
+            UI.getCurrent().navigate(MainView.class);
         });
 
         returnButton.getStyle().set("margin-top", "0");
@@ -108,33 +112,11 @@ public class PageEditorPage extends Composite<VerticalLayout> {
         personName.getStyle().set("font-size", "20px");
         header.add(personName);
 
-        Button saveButton = new Button(VaadinIcon.CHECK.create());
-        saveButton.addClickListener(event -> {
-            UI.getCurrent().navigate(AccountView.class);
-
-            Post pt = new Post(4, text.getValue(), title.getValue());
-            db.savePost(pt, null);
-        });
-
-        saveButton.getStyle().set("margin-top", "0");
-        saveButton.getStyle().set("padding-top", "0");
-
-        saveButton.getStyle().set("background", "none");
-        saveButton.getStyle().set("border", "none");
-        saveButton.getStyle().set("padding", "0");
-        saveButton.getStyle().set("font-size", "20px");
-        saveButton.getStyle().set("color", "inherit");
-        saveButton.getStyle().set("cursor", "pointer");
-        saveButton.getStyle().set("text-decoration", "none");
-        header.add(saveButton);
-
         returnButton.getStyle().set("margin-right", "0");
         personName.getStyle().set("margin-right", "0");
-        saveButton.getStyle().set("margin-left", "auto");
 
         return header;
     }
 }
-
 
 

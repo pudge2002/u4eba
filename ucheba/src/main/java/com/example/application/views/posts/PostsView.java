@@ -22,7 +22,7 @@ public class PostsView extends Composite<VerticalLayout> {
 
     Grid<Post> grid = new Grid<>();
     DatabaseService db = new DatabaseService();
-    public PostsView() throws SQLException {
+    public PostsView(String navigationPage) {
 
         afterNavigation();
 
@@ -42,9 +42,9 @@ public class PostsView extends Composite<VerticalLayout> {
         grid.getStyle().set("background-color", "#E6E9ED");
 
         grid.addItemClickListener(event -> {
-            Post person = event.getItem();
-            VaadinSession.getCurrent().setAttribute("post", person);
-            getUI().ifPresent(ui -> ui.navigate("page-edit"));
+            Post post = event.getItem();
+            VaadinSession.getCurrent().setAttribute("post", post);
+            getUI().ifPresent(ui -> ui.navigate(navigationPage));
         });
 
         getContent().add(grid);
@@ -102,7 +102,7 @@ public class PostsView extends Composite<VerticalLayout> {
     }
 
 
-    public void afterNavigation() throws SQLException {
+    public void afterNavigation() {
 
         // Set some data when this view is displayed.
         List<Post> persons = db.getAllPosts();

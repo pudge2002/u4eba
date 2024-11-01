@@ -1,5 +1,6 @@
 package com.example.application.views.account;
 
+import com.example.application.Model.Post;
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
 import com.vaadin.flow.component.ClientCallable;
@@ -169,18 +170,30 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
 
         layoutColumn2.add(colorPickerContainer);
 
-
         addClassName("main-content");
+
+        Button exitButton = new Button("Выйти из аккаунта");
+        exitButton.addClickListener(event -> {
+            getUI().ifPresent(ui -> ui.navigate(""));
+        });
+
+        exitButton.getStyle().set("background-color", "white");
+        exitButton.getStyle().set("color", "red");
+        exitButton.getStyle().set("border", "none");
+
+        getContent().add(exitButton);
+//        addPost.getStyle().set("border-radius", "100%");
+//        addPost.getStyle().set("width", "60px");
+//        addPost.getStyle().set("height", "60px");
+//        addPost.getStyle().set("font-size", "50px");
+//        addPost.getStyle().set("align-items", "center");
+//        addPost.getStyle().set("justify-content", "center");
+
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        boolean isMobile = AccountView.isMobileDevice();
-        if (isMobile) {
-            getContent().add(new mobileNav());
-        } else {
-            getContent().add(new desktopNav());
-        }
+
     }
     public class DeviceUtils {
         public static boolean isMobileDevice() {

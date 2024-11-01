@@ -14,12 +14,12 @@ public class DatabaseService {
     public DatabaseService() {
         try {
             dbConnection = Connect_to_DataBase.getInstance();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println("Ошибка при подключении к базе данных: " + e.getMessage());
         }
     }
 
-    public List<Post> getAllPosts() throws SQLException {
+    public List<Post> getAllPosts(){
         List<Post> posts = new ArrayList<>();
         String sql = "SELECT * FROM posts";
         Connection conn = null;
@@ -39,14 +39,15 @@ public class DatabaseService {
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
                 posts.add(new Post(userId, content, heading, createdAt));
             }
-            return posts;
-        } catch (SQLException e) {
-            // Обработка исключения
-            throw e;
+
+        } catch (Exception e) {
+            posts.add(new Post());
+            System.err.println("Ошибка при загрузке постов: " + e.getMessage());
         }
+        return posts;
     }
 
-    public void savePost(Post post, List<Media> mediaList) throws SQLException {
+    public void savePost(Post post, List<Media> mediaList) {
         String sql = "INSERT INTO posts (user_id, content, heading) VALUES (?, ?, ?)";
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -68,12 +69,12 @@ public class DatabaseService {
                     saveMedia(postId, mediaList);
                 }
             }
-        } catch (SQLException e) {
-            throw e;
+        } catch (Exception e) {
+            System.err.println("Ошибка при сохранении постов: " + e.getMessage());
         }
     }
 
-    private void saveMedia(int postId, List<Media> mediaList) throws SQLException {
+    private void saveMedia(int postId, List<Media> mediaList){
         String sql = "INSERT INTO media (post_id, media_type, media_data, created_at) VALUES (?, ?, ?, ?)";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -86,6 +87,9 @@ public class DatabaseService {
                 stmt.addBatch();
             }
             stmt.executeBatch();
+        }
+        catch (Exception e) {
+            System.err.println("Ошибка при сохранении медиа: " + e.getMessage());
         }
     }
 
@@ -108,15 +112,4 @@ public class DatabaseService {
         }
         return mediaList;
     }
-
-    public static void main(String[] args) throws SQLException {
-        DatabaseService db = new DatabaseService();
-        Post pt = new Post(1, "Привет2!", "Олух");
-        db.savePost(pt, null);
-        System.out.println(db.getAllPosts().toString());
-        pt = new Post(1, "Привет23!", "Дима пи...");
-        db.savePost(pt, null);
-        System.out.println(db.getAllPosts().toString());
-    }
-
 }

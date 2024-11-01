@@ -185,14 +185,7 @@ public class AccountEditView extends Composite<VerticalLayout> implements Before
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        boolean isMobile = AccountView.isMobileDevice();
-        if (isMobile) {
 
-            getContent().add(new mobileNav());
-        } else {
-            //h1.getStyle().set("margin-top","5%");
-            getContent().add(new desktopNav());
-        }
     }
 }
 
