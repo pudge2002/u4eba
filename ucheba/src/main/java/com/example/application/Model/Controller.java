@@ -3,7 +3,10 @@ package com.example.application.Model;
 import com.example.application.localdata.Media;
 import com.example.application.localdata.Post;
 import com.example.application.localdata.UserData;
+import com.vaadin.flow.server.VaadinResponse;
+import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinSession;
+import jakarta.servlet.http.Cookie;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -36,6 +39,10 @@ public class Controller {
                     UserData userData = new UserData(userName, userEmail, userDescription, userAvatar);
 
                     VaadinSession.getCurrent().setAttribute(UserData.class, userData);
+
+                    // Сохранение данных в куки
+                    saveUserDataToCookies(userData);
+
                     return true;
                 } else {
                     return false;
@@ -192,5 +199,18 @@ public class Controller {
         return mediaList;
     }
 
+    private void saveUserDataToCookies(UserData userData) {
+        VaadinResponse response = VaadinService.getCurrentResponse();
+        addCookie(response, "username", userData.getUsername());
+        addCookie(response, "email", userData.getEmail());
+        addCookie(response, "avatar", userData.getAvatar());
+        addCookie(response, "description", userData.getDescription());
+    }
+
+    private void addCookie(VaadinResponse response, String name, String value) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge(3600); // Время жизни куки в секундах
+        response.addCookie(cookie);
+    }
 }
 

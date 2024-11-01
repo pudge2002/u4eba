@@ -1,6 +1,7 @@
 package com.example.application.views.main;
 
 import com.example.application.localdata.Post;
+import com.example.application.localdata.UserData;
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
 import com.example.application.views.posts.PostView;
@@ -15,8 +16,11 @@ import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import jakarta.servlet.http.Cookie;
 
 import java.sql.SQLException;
 
@@ -29,7 +33,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
     HorizontalLayout Navbar;
 
     public MainView() throws SQLException {
-
+        UserData userData = loadUserDataFromCookies();
         VerticalLayout content = CreateContent();
         content.setSizeFull();
         setContent(content);
@@ -132,6 +136,31 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         VaadinSession session = VaadinSession.getCurrent();
         String userAgent = session.getBrowser().getBrowserApplication();
         return userAgent.contains("Mobile") || userAgent.contains("Android") || userAgent.contains("iPhone");
+    }
+
+    private UserData loadUserDataFromCookies() {
+        VaadinRequest request = VaadinService.getCurrentRequest();
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            String username = getCookieValue(cookies, "username");
+            String email = getCookieValue(cookies, "email");
+            String avatar = getCookieValue(cookies, "avatar");
+            String description = getCookieValue(cookies, "description");
+
+            if (username != null && email != null) {
+                return new UserData(username, email, description, avatar);
+            }
+        }
+        return null;
+    }
+
+    private String getCookieValue(Cookie[] cookies, String name) {
+        for (Cookie cookie : cookies) {
+            if (name.equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+        return null;
     }
 }
 
