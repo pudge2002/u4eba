@@ -1,6 +1,5 @@
 package com.example.application.views.authorization;
 
-import java.sql.SQLException;
 import com.example.application.Model.*;
 import com.example.application.views.main.MainView;
 import com.example.application.views.registration.RegistrationView;
@@ -8,7 +7,6 @@ import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.*;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
@@ -23,12 +21,15 @@ import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import com.vaadin.flow.component.UI;
 
+import java.sql.SQLException;
+
 @PageTitle("Authorization")
 @Menu(icon = "line-awesome/svg/pencil-ruler-solid.svg", order = 2)
 @Route(value = "")
 public class AuthorizationView extends Composite<VerticalLayout> {
-    UserController controller = new UserController();
-    public AuthorizationView() {
+    Controller controller = new Controller();
+
+    public AuthorizationView() throws SQLException {
         HorizontalLayout layoutRow = new HorizontalLayout();
         HorizontalLayout layoutRow2 = new HorizontalLayout();
         VerticalLayout layoutColumn2 = new VerticalLayout();

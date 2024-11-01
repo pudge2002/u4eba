@@ -1,8 +1,5 @@
 package com.example.application.views.account;
 
-import com.example.application.Model.Post;
-import com.example.application.views.navbars.desktopNav;
-import com.example.application.views.navbars.mobileNav;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
@@ -12,7 +9,6 @@ import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.component.UI;

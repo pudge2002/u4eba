@@ -1,8 +1,5 @@
-package com.example.application.Model;
+package com.example.application.localdata;
 
-import org.springframework.cglib.core.Local;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Post {

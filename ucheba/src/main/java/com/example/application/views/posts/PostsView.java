@@ -1,11 +1,10 @@
 package com.example.application.views.posts;
 
-import com.example.application.Model.DatabaseService;
-import com.example.application.Model.Post;
+import com.example.application.Model.Controller;
+import com.example.application.localdata.Post;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -21,8 +20,9 @@ import java.util.List;
 public class PostsView extends Composite<VerticalLayout> {
 
     Grid<Post> grid = new Grid<>();
-    DatabaseService db = new DatabaseService();
-    public PostsView(String navigationPage) {
+    Controller db = new Controller();
+
+    public PostsView(String navigationPage) throws SQLException {
 
         afterNavigation();
 

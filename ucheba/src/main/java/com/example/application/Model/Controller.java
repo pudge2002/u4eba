@@ -1,27 +1,84 @@
 package com.example.application.Model;
 
+import com.example.application.localdata.Media;
+import com.example.application.localdata.Post;
+import com.example.application.localdata.UserData;
+import com.vaadin.flow.server.VaadinSession;
+
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserController {
-    private UserAuthentication auth;
-    private UserRegistration registration;
+public class Controller {
+
     private Connect_to_DataBase dbConnection;
 
-    public UserController() throws SQLException {
-        auth = new UserAuthentication();
-        registration = new UserRegistration();
+    public Controller() throws SQLException {
         dbConnection = Connect_to_DataBase.getInstance();
     }
 
     public boolean authenticateUser(String username, String password) {
-        return auth.authenticate(username, password);
+        String query = "SELECT * FROM users WHERE username = ? AND password_hash = ?";
+        Connection connection = dbConnection.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+
+                    String userEmail = resultSet.getString("email");
+                    String userName = resultSet.getString("username");
+                    String userDescription = resultSet.getString("description");
+                    String userAvatar = resultSet.getString("avatar");
+                    UserData userData = new UserData(userName, userEmail, userDescription, userAvatar);
+
+                    VaadinSession.getCurrent().setAttribute(UserData.class, userData);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
+            return false;
+        }
     }
 
     public boolean registerUser(String username, String password, String email) {
-        return registration.register(username, password, email);
+        String query = "INSERT INTO users (username, password_hash, email) VALUES (?, ?, ?)";
+        Connection connection = dbConnection.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, email);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Ошибка при регистрации пользователя: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean saveUser() {
+        UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
+        String query = "INSERT INTO users (username, email, avatar, description) VALUES (?, ?, ?, ?)";
+        Connection connection = dbConnection.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, userData.getUsername());
+            preparedStatement.setString(2, userData.getEmail());
+            preparedStatement.setString(4, userData.getAvatar());
+            preparedStatement.setString(6, userData.getDescription());
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
+            return false;
+        }
     }
 
     public List<Post> getAllPosts(){

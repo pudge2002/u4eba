@@ -1,32 +1,24 @@
 package com.example.application.views.posts;
 
-import com.example.application.Model.DatabaseService;
-import com.example.application.Model.Post;
-import com.example.application.views.account.AccountView;
+import com.example.application.Model.Controller;
+import com.example.application.localdata.Post;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.upload.Upload;
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.sql.SQLException;
 
 @PageTitle("Post Open")
 @Menu(icon = "line-awesome/svg/edit.svg", order = 1)
@@ -35,11 +27,12 @@ public class PostOpenView extends Composite<VerticalLayout> {
 
     Post post = new Post();
     Span personName = new Span("");
-    DatabaseService db = new DatabaseService();
+    Controller db = new Controller();
+
     H2 title = new H2();
     Paragraph text = new Paragraph();
 
-    PostOpenView(){
+    PostOpenView() throws SQLException {
         getContent().setWidthFull();
         getContent().getStyle().set("overflow-y", "auto");
 

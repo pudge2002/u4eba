@@ -1,12 +1,11 @@
 package com.example.application.views.registration;
 
-import com.example.application.Model.UserController;
+import com.example.application.Model.Controller;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Image;
@@ -23,14 +22,15 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 
+import java.sql.SQLException;
 import java.util.Objects;
 
 @PageTitle("Registration")
 @Menu(icon = "line-awesome/svg/pencil-ruler-solid.svg", order = 3)
 @Route(value = "registration")
 public class RegistrationView extends Composite<VerticalLayout> {
-    UserController controller = new UserController();
-    public RegistrationView() {
+    Controller controller = new Controller();
+    public RegistrationView() throws SQLException {
         HorizontalLayout layoutRow = new HorizontalLayout();
         VerticalLayout layoutColumn2 = new VerticalLayout();
         VerticalLayout layoutColumn3 = new VerticalLayout();

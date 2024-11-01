@@ -1,30 +1,23 @@
 package com.example.application.views.pageeditor;
 
-import com.example.application.Model.DatabaseService;
-import com.example.application.Model.Post;
+import com.example.application.Model.*;
+import com.example.application.localdata.Post;
 import com.example.application.views.account.AccountView;
-import com.example.application.views.posts.Person;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.server.VaadinSession;
 
 import java.sql.SQLException;
-import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 
 @PageTitle("Page Editor")
 @Menu(icon = "line-awesome/svg/edit.svg", order = 1)
@@ -33,11 +26,11 @@ public class PageEditorPage extends Composite<VerticalLayout> {
 
     Post post = new Post();
     Span personName = new Span("");
-    DatabaseService db = new DatabaseService();
+    Controller db = new Controller();
     TextField title = new TextField();
     TextArea text = new TextArea();
 
-    PageEditorPage(){
+    PageEditorPage() throws SQLException {
         getContent().setWidthFull();
         getContent().getStyle().set("overflow-y", "auto");
 

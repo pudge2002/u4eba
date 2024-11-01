@@ -56,13 +56,6 @@ public class Connect_to_DataBase {
                 return false;
             }
         }
-
-    //public static void main(String[] args) {
-        //UserController controller = new UserController();
-        //Connect_to_DataBase dbConnection;
-        //System.out.println();
-    //}
-
 }
 
 

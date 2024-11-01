@@ -1,23 +1,15 @@
 package com.example.application.views.main;
 
-import com.example.application.Model.Post;
-import com.example.application.views.account.AccountView;
+import com.example.application.localdata.Post;
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
-import com.example.application.views.posts.Person;
 import com.example.application.views.posts.PostView;
 import com.example.application.views.posts.PostsView;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -36,7 +28,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
     TabSheet tabSheet = new TabSheet();
     HorizontalLayout Navbar;
 
-    public MainView() {
+    public MainView() throws SQLException {
 
         VerticalLayout content = CreateContent();
         content.setSizeFull();
@@ -45,7 +37,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         CreateNavbar();
     }
 
-    private VerticalLayout CreateContent(){
+    private VerticalLayout CreateContent() throws SQLException {
         VerticalLayout content = new VerticalLayout();
 
         setTabSheetSampleData();
@@ -81,7 +73,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         return content;
     }
 
-    private void setTabSheetSampleData() {
+    private void setTabSheetSampleData() throws SQLException {
         PostsView post = new PostsView("post-open");
        // AccountView ac = new AccountView();
         PostView post2 = new PostView();
