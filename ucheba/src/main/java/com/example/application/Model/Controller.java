@@ -109,6 +109,25 @@ public class Controller {
         return posts;
     }
 
+    public String getUserameById(int id) {
+        String query = "SELECT * FROM users WHERE id = ?";
+        Connection connection = dbConnection.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String userName = resultSet.getString("username");
+                    return userName;
+                } else {
+                    return null; // Или можно вернуть пустую строку, если пользователь не найден
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
+            return null; // Или можно вернуть пустую строку в случае ошибки
+        }
+    }
     public void savePost(Post post, List<Media> mediaList) {
         String sql = "INSERT INTO posts (user_id, content, heading) VALUES (?, ?, ?)";
         Connection conn;
@@ -172,5 +191,6 @@ public class Controller {
         }
         return mediaList;
     }
+
 }
 
