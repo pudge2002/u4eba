@@ -1,5 +1,6 @@
 package com.example.application.views.account;
 
+import com.example.application.localdata.UserData;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
@@ -28,6 +29,10 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
     String aboutus = "student";
     private String selectedColor = "#ff0000"; // Переменная для сохранения цвета
     public EditAccountView() {
+        UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
+        System.out.println("1"+userData);
+        if (userData.getAvatar()!=null)
+            selectedColor = userData.getAvatar();
         HorizontalLayout layoutRow = new HorizontalLayout();
         VerticalLayout layoutColumn2 = new VerticalLayout();
         Avatar avatar = new Avatar();
@@ -36,7 +41,7 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         Button buttonSecondary = new Button();
 
 
-        getContent().setWidth("100%");
+        getContent().setWidth("90%");
         getContent().getStyle().set("flex-grow", "1");
         getContent().setJustifyContentMode(JustifyContentMode.CENTER);
         getContent().setAlignItems(Alignment.CENTER);
@@ -45,15 +50,15 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
 
         layoutRow.setWidth("min-content");
         layoutRow.setHeight("min-content");
-        layoutColumn2.setHeightFull();
-        layoutRow.setFlexGrow(1.0, layoutColumn2);
+//        layoutColumn2.setHeightFull();
+//        layoutRow.setFlexGrow(1.0, layoutColumn2);
         layoutColumn2.setWidth("100%");
-        layoutColumn2.getStyle().set("flex-grow", "1");
-        avatar.setName(user);
+//        layoutColumn2.getStyle().set("flex-grow", "1");
+        avatar.setName(userData.getUsername());
         avatar.setWidth("150px");
         avatar.setHeight("150px");
         avatar.getStyle().set("background-color", selectedColor);
-        h2.setText("Menshev");
+
         h2.setWidth("max-content");
         h6.setText("student");
         h6.setWidth("max-content");
@@ -71,11 +76,7 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         });
         H3 red = new H3("Редактирование");
         Button saveButton = new Button(VaadinIcon.CHECK.create());
-        saveButton.addClickListener(event -> {
-            System.out.println(getSelectedColor() );
-            UI.getCurrent().navigate(AccountView.class);
-            //saveData();
-        });
+
         HorizontalLayout hz = new HorizontalLayout(returnButton, red, saveButton);
         hz.setWidth("100%");
         saveButton.getStyle().set("margin-top", "0");
@@ -106,16 +107,17 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
 
 //        layoutColumn2.add(h2);
 //        layoutColumn2.add(h6);
-        layoutRow.getStyle().set("width", "90%");
+        layoutRow.getStyle().set("width", "30%");
         getContent().add(layoutRow);
         layoutRow.add(layoutColumn2);
 
         TextField userName = new TextField("Изменить имя");
         TextField about = new TextField("Описание профиля");
         userName.getStyle().set("width","300px");
-        userName.setPlaceholder(user);
-        about.setPlaceholder(aboutus);
+        userName.setPlaceholder(userData.getUsername());
+        about.setPlaceholder(userData.getDescription());
         about.getStyle().set("width","300px").setHeight("300px");
+        about.getStyle().set("height","100px");
         getContent().add(userName);
         getContent().add(about);
 
@@ -172,7 +174,14 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         exitButton.addClickListener(event -> {
             getUI().ifPresent(ui -> ui.navigate(""));
         });
-
+        saveButton.addClickListener(event -> {
+            System.out.println(getSelectedColor()+userName.getValue()+about.getValue());
+            userData.setAvatar(getSelectedColor());
+            userData.setUsername(userName.getValue());
+            userData.setDescription(about.getValue());
+            UI.getCurrent().navigate(AccountView.class);
+            //saveData();
+        });
         exitButton.getStyle().set("background-color", "white");
         exitButton.getStyle().set("color", "red");
         exitButton.getStyle().set("border", "none");

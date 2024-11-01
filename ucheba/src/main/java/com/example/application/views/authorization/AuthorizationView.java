@@ -1,6 +1,7 @@
 package com.example.application.views.authorization;
 
 import com.example.application.Model.*;
+import com.example.application.localdata.UserData;
 import com.example.application.views.main.MainView;
 import com.example.application.views.registration.RegistrationView;
 import com.vaadin.flow.component.Composite;
@@ -18,6 +19,7 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import com.vaadin.flow.component.UI;
 
@@ -104,6 +106,8 @@ public class AuthorizationView extends Composite<VerticalLayout> {
             String username = textField.getValue();
             String password = passwordField.getValue();
             boolean isAuthenticated = controller.authenticateUser(username, password);
+            UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
+            System.out.println(userData);
             if (isAuthenticated) {
                 UI.getCurrent().navigate(MainView.class);
                 System.out.println("norm");

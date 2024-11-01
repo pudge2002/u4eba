@@ -1,6 +1,7 @@
 package com.example.application.views.registration;
 
 import com.example.application.Model.Controller;
+import com.example.application.views.authorization.AuthorizationView;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
@@ -110,7 +111,7 @@ public class RegistrationView extends Composite<VerticalLayout> {
                     boolean isRegistered = controller.registerUser(textField.getValue(), passwordField.getValue(), textField2.getValue());
                     System.out.println(isRegistered);
                     if (isRegistered) {
-                        UI.getCurrent().navigate(MainView.class);
+                        UI.getCurrent().navigate(AuthorizationView.class);
                     } else {
                         errorMessage.setText("Ошибка подключения");
                         errorMessage.setVisible(true);

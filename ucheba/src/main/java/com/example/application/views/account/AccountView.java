@@ -1,5 +1,6 @@
 package com.example.application.views.account;
 
+import com.example.application.localdata.UserData;
 import com.example.application.views.main.MainView;
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
@@ -49,7 +50,7 @@ public class AccountView extends AppLayout implements BeforeEnterObserver {
 
     private VerticalLayout CreateContent() throws SQLException {
         VerticalLayout content = new VerticalLayout();
-
+        UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
         HorizontalLayout layoutRow = new HorizontalLayout();
         VerticalLayout layoutColumn2 = new VerticalLayout();
         Avatar avatar = new Avatar();
@@ -73,12 +74,14 @@ public class AccountView extends AppLayout implements BeforeEnterObserver {
         layoutRow.setFlexGrow(1.0, layoutColumn2);
         layoutColumn2.setWidth("100%");
         layoutColumn2.getStyle().set("flex-grow", "1");
-        avatar.setName("Menshev");
+        avatar.setName(userData.getUsername());
         avatar.setWidth("150px");
         avatar.setHeight("150px");
-        h2.setText("Menshev");
+        if(userData.getAvatar()!=null)
+            avatar.getStyle().set("background-color", userData.getAvatar());
+        h2.setText(userData.getUsername());
         h2.setWidth("max-content");
-        h6.setText("student");
+        h6.setText(userData.getDescription());
         h6.setWidth("max-content");
         buttonSecondary.setText("Редактировать");
         buttonSecondary.getStyle().set("margin-top", "20%");
