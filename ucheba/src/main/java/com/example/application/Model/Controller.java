@@ -1,30 +1,35 @@
-
 package com.example.application.Model;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-public class DatabaseService {
+
+public class UserController {
+    private UserAuthentication auth;
+    private UserRegistration registration;
     private Connect_to_DataBase dbConnection;
 
-    public DatabaseService() {
-        try {
-            dbConnection = Connect_to_DataBase.getInstance();
-        } catch (Exception e) {
-            System.err.println("Ошибка при подключении к базе данных: " + e.getMessage());
-        }
+    public UserController() throws SQLException {
+        auth = new UserAuthentication();
+        registration = new UserRegistration();
+        dbConnection = Connect_to_DataBase.getInstance();
+    }
+
+    public boolean authenticateUser(String username, String password) {
+        return auth.authenticate(username, password);
+    }
+
+    public boolean registerUser(String username, String password, String email) {
+        return registration.register(username, password, email);
     }
 
     public List<Post> getAllPosts(){
         List<Post> posts = new ArrayList<>();
         String sql = "SELECT * FROM posts";
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+        Connection conn;
+        PreparedStatement stmt;
+        ResultSet rs;
 
         try {
             conn = dbConnection.getConnection();
@@ -49,9 +54,9 @@ public class DatabaseService {
 
     public void savePost(Post post, List<Media> mediaList) {
         String sql = "INSERT INTO posts (user_id, content, heading) VALUES (?, ?, ?)";
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet generatedKeys = null;
+        Connection conn;
+        PreparedStatement stmt;
+        ResultSet generatedKeys;
 
         try {
             conn = dbConnection.getConnection();
@@ -78,7 +83,6 @@ public class DatabaseService {
         String sql = "INSERT INTO media (post_id, media_type, media_data, created_at) VALUES (?, ?, ?, ?)";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             for (Media media : mediaList) {
                 stmt.setInt(1, postId);
                 stmt.setString(2, media.getMediaType());
@@ -98,9 +102,8 @@ public class DatabaseService {
         String sql = "SELECT * FROM media WHERE post_id = ?";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, postId);
-            try (ResultSet rs = stmt.executeQuery()) {
+             stmt.setInt(1, postId);
+             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     String mediaType = rs.getString("media_type");
@@ -108,8 +111,9 @@ public class DatabaseService {
                     LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
                     mediaList.add(new Media(id, postId, mediaType, mediaData, createdAt));
                 }
-            }
+             }
         }
         return mediaList;
     }
 }
+
