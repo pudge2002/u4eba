@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class Post {
     private int id;
     private int userId;
+    private String login;
     private String content;
     private LocalDateTime createdAt;
     private String heading;

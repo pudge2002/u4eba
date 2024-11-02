@@ -6,7 +6,12 @@ public class UserData {
     private String description;
     private String avatar;
 
-    public UserData(String username, String email, String description, String avatar) {
+
+
+    private int userId;
+
+    public UserData(int userId, String username, String email, String description, String avatar) {
+        this.userId = userId;
         this.username = username;
         this.email = email;
         this.description = description;
@@ -49,6 +54,13 @@ public class UserData {
 
     public String getAvatar() {
         return avatar;
+    }
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setEmail(String email) {

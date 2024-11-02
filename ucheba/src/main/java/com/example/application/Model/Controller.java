@@ -21,22 +21,22 @@ public class Controller {
         dbConnection = Connect_to_DataBase.getInstance();
     }
 
-    public boolean authenticateUser(String username, String password) {
-        String query = "SELECT * FROM users WHERE username = ? AND password_hash = ?";
+    public boolean authenticateUser(String email, String password) {
+        String query = "SELECT * FROM users WHERE email = ? AND password_hash = ?";
         Connection connection = dbConnection.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-
+                    int userid = resultSet.getInt("id");
                     String userEmail = resultSet.getString("email");
                     String userName = resultSet.getString("username");
                     String userDescription = resultSet.getString("description");
                     String userAvatar = resultSet.getString("avatar");
-                    UserData userData = new UserData(userName, userEmail, userDescription, userAvatar);
+                    UserData userData = new UserData(userid, userName, userEmail, userDescription, userAvatar);
 
                     VaadinSession.getCurrent().setAttribute(UserData.class, userData);
 
@@ -72,14 +72,17 @@ public class Controller {
     }
 
     public boolean saveUser() {
+        System.out.println("щас сохраню");
+
         UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
-        String query = "INSERT INTO users (username, email, avatar, description) VALUES (?, ?, ?, ?)";
+//        System.out.println(userData.getAvatar() , userData.getUsername(), userData.getEmail());
+        String query = "UPDATE users SET username = ?, avatar = ?, description = ? WHERE email = ?;";
         Connection connection = dbConnection.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, userData.getUsername());
-            preparedStatement.setString(2, userData.getEmail());
-            preparedStatement.setString(4, userData.getAvatar());
-            preparedStatement.setString(6, userData.getDescription());
+            preparedStatement.setString(4, userData.getEmail());
+            preparedStatement.setString(2, userData.getAvatar());
+            preparedStatement.setString(3, userData.getDescription());
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {

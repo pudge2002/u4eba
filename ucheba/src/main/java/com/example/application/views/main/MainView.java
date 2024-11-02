@@ -142,13 +142,14 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         VaadinRequest request = VaadinService.getCurrentRequest();
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
+
             String username = getCookieValue(cookies, "username");
             String email = getCookieValue(cookies, "email");
             String avatar = getCookieValue(cookies, "avatar");
             String description = getCookieValue(cookies, "description");
 
             if (username != null && email != null) {
-                return new UserData(username, email, description, avatar);
+                return new UserData(1,username, email, description, avatar);
             }
         }
         return null;

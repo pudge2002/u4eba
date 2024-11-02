@@ -1,5 +1,6 @@
 package com.example.application.views.account;
 
+import com.example.application.Model.Controller;
 import com.example.application.localdata.UserData;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Composite;
@@ -18,6 +19,8 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.server.VaadinSession;
 
+import java.sql.SQLException;
+
 //import com.vaadin.flow.component.orderedlayout.FlexLayout.Gap;
 
 @PageTitle("edAccount")
@@ -26,9 +29,10 @@ import com.vaadin.flow.server.VaadinSession;
 public class EditAccountView extends Composite<VerticalLayout> implements BeforeEnterObserver {
     H1 h1 = new H1();
     String user = "Menshev";
+    Controller controller = new Controller();
     String aboutus = "student";
     private String selectedColor = "#ff0000"; // Переменная для сохранения цвета
-    public EditAccountView() {
+    public EditAccountView() throws SQLException {
         UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
         System.out.println("1"+userData);
         if (userData.getAvatar()!=null)
@@ -179,7 +183,9 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
             userData.setAvatar(getSelectedColor());
             userData.setUsername(userName.getValue());
             userData.setDescription(about.getValue());
-            UI.getCurrent().navigate(AccountView.class);
+            boolean isSave = controller.saveUser();
+            if(isSave)
+                UI.getCurrent().navigate(AccountView.class);
             //saveData();
         });
         exitButton.getStyle().set("background-color", "white");

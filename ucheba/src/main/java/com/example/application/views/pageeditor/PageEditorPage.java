@@ -2,6 +2,7 @@ package com.example.application.views.pageeditor;
 
 import com.example.application.Model.*;
 import com.example.application.localdata.Post;
+import com.example.application.localdata.UserData;
 import com.example.application.views.account.AccountView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Composite;
@@ -25,6 +26,8 @@ import java.sql.SQLException;
 public class PageEditorPage extends Composite<VerticalLayout> {
 
     Post post = new Post();
+    UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
+
     Span personName = new Span("");
     Controller db = new Controller();
     TextField title = new TextField();
@@ -105,7 +108,7 @@ public class PageEditorPage extends Composite<VerticalLayout> {
         saveButton.addClickListener(event -> {
             UI.getCurrent().navigate(AccountView.class);
 
-            Post pt = new Post(4, text.getValue(), title.getValue());
+            Post pt = new Post(userData.getUserId(), text.getValue(), title.getValue());
             db.savePost(pt, null);
         });
 
