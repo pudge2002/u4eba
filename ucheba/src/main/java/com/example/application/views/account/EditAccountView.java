@@ -53,7 +53,7 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         getContent().setFlexGrow(1.0, layoutRow);
 
         layoutRow.setWidth("min-content");
-        layoutRow.setHeight("min-content");
+//        layoutRow.setHeight("min-content");
 //        layoutColumn2.setHeightFull();
 //        layoutRow.setFlexGrow(1.0, layoutColumn2);
         layoutColumn2.setWidth("100%");

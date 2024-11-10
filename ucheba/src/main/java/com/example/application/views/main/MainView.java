@@ -10,12 +10,15 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinRequest;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinSession;
@@ -80,26 +83,16 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
 
     private void setTabSheetSampleData() throws SQLException {
         PostsView post = new PostsView("post-open");
-       // AccountView ac = new AccountView();
-        PostView post2 = new PostView();
-        PostView post3 = new PostView();
-        PostView post4 = new PostView();
-        PostView post5 = new PostView();
-        PostView post6 = new PostView();
-
-        post.getContent().setHeight("100%");
-
-        VerticalLayout layout = new VerticalLayout(post2,post3,post4,post5,post6);
-        layout.setSizeFull();
+        PostsView post2 = new PostsView("post-open");
 
         tabSheet.add("Популярное", post);
-        tabSheet.add("Вопрос/ответ", layout);
+        tabSheet.add("Вопрос/ответ", post2);
     }
 
     public void CreateNavbar(){
         boolean isMobile = isMobileDevice();
         if (isMobile) {
-            tabSheet.setWidth("100%");
+            tabSheet.setWidthFull();
             tabSheet.getStyle().set("margin-left", "0").set("padding-left","0");
             tabSheet.addClassName("left-aligned");
 
@@ -108,22 +101,30 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
 
         } else {
             tabSheet.getStyle().set("margin-top", "0px");
-            tabSheet.setWidth("1000px");
+            tabSheet.setWidth("80%");
             tabSheet.getStyle().set("margin-left", "10px");
             tabSheet.getStyle().set("margin-right", "auto");
 
             DrawerToggle toggle = new DrawerToggle();
 
-            H1 title = new H1("ucheba");
-            title.getStyle().set("font-size", "var(--lumo-font-size-l)");
-            title.getStyle().set("margin-left","15%");
+
+            StreamResource image = new StreamResource("logo.png",
+                    () -> getClass().getResourceAsStream("/images/logo.png"));
+            Image logo = new Image(image,"ucheba logo");
+            logo.setWidth("50px");
+            logo.setHeight("50px");
+            logo.getStyle().set("margin-left", "13%");
+//            title.getStyle().set("font-size", "var(--lumo-font-size-xl)");
+
             desktopNav Navbar = new desktopNav();
 
+
             Scroller scroller = new Scroller(Navbar);
-            scroller.setClassName(LumoUtility.Padding.SMALL);
+//            scroller.setClassName(LumoUtility.Padding.XLARGE);
+
             setDrawerOpened(true);
             addToDrawer(scroller);
-            addToNavbar(title);
+            addToNavbar(logo);
         }
     }
 

@@ -1,14 +1,34 @@
 html, body {
-    background-color: #f0f0f0; /* Установите нужный цвет фона */
+    background-color: #f0f0f0;
+
 }
-vaadin-app-layout::part(navbar) {
-    background-color: rgba(250,136,169,0.7); /* Зеленый цвет */
-    color: white; /* Белый цвет текста */
+head {
+    display: block;
 }
 
-/* Стили для боковой панели */
+head::after {
+    content: url('icons/logo.ico');
+    display: none;
+}
+.navbar-title-container {
+    display: flex;
+    align-items: flex-end;
+    margin-left: 13%;
+}
+
+.navbar-title-container h1, .navbar-title-container h4 {
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+}
+vaadin-app-layout::part(navbar) {
+    background-color: #e34d72;
+    color: white;
+}
+
+
 vaadin-app-layout::part(drawer) {
-    background-color: transparent; /* Темно-зеленый цвет */
+    background-color: transparent;
 
 }
 .pinkText{
@@ -77,8 +97,8 @@ vaadin-app-layout::part(drawer) {
     margin: 5px; /* Добавляем отступы между табами */
 }
 
-/* Стили для активного таба */
+
 .vaadin-tab[selected] {
-    background-color: #ff0000; /* Пример цвета фона активного таба */
-    color: #ffffff; /* Пример цвета текста активного таба */
+    background-color: #ff0000;
+    color: #ffffff;
 }

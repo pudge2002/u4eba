@@ -105,6 +105,7 @@ public class AuthorizationView extends Composite<VerticalLayout> {
 
             String username = textField.getValue();
             String password = passwordField.getValue();
+            System.out.println("VHOD" + username + password);
             boolean isAuthenticated = controller.authenticateUser(username, password);
             UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
             System.out.println(userData);

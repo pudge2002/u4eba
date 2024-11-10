@@ -26,6 +26,7 @@ public class desktopNav extends HorizontalLayout {
 
     public desktopNav() {
         add(getNavigation());
+
     }
 
     private VerticalLayout getNavigation() {
@@ -39,6 +40,7 @@ public class desktopNav extends HorizontalLayout {
         navigation.add(createLink(VaadinIcon.HOME, "Главная"),
                 createLink(VaadinIcon.SEARCH, "Поиск"),
                 createLink(VaadinIcon.USER, "Аккаунт"));
+        navigation.getStyle().set("margin-top", "10%");
         return navigation;
     }
 

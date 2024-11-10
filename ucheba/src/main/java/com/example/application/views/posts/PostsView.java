@@ -71,7 +71,7 @@ public class PostsView extends Composite<VerticalLayout> {
         header.setSpacing(false);
         header.getThemeList().add("spacing-s");
 
-        H3 name = new H3(person.getHeading());
+        H4 name = new H4(person.getAuthor());
 //        name.addClassName("name");
         LocalDateTime createdAt = person.getCreatedAt();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -82,13 +82,13 @@ public class PostsView extends Composite<VerticalLayout> {
         avatar.setHeight("50px");
         avatar.setWidth("50px");
         avatar.setName(person.getAuthor());
-        avatar.getStyle().set("background-color", person.getContent()); //цвет от авы пользователя
+        avatar.getStyle().set("background-color", person.getAvatar()); //цвет от авы пользователя
         header.add(avatar, name, date);
         header.getStyle().set("display", "flex");
         header.getStyle().set("align-items", "flex-start"); // Центрируем элементы по горизонтали
 
-       header.setWidthFull(); // Устанавливаем ширину контейнера на 100%
-
+        header.setWidthFull(); // Устанавливаем ширину контейнера на 100%
+        H3 headerPost = new H3(person.getHeading());
         Span post = new Span(person.getContent());
 //        post.addClassName("post");/
 
@@ -112,8 +112,9 @@ public class PostsView extends Composite<VerticalLayout> {
 //
 //        actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
 
-        description.add(header, post);
+        description.add(header,headerPost, post);
         card.add(description);
+        card.setSizeFull();
         return card;
     }
 
