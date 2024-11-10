@@ -118,18 +118,24 @@ public class Controller {
 
                 stmt_author = conn.prepareStatement(sqlAuthor + String.valueOf(userId));
                 rs_author = stmt_author.executeQuery();
-                String author = rs_author.getString("username");
+                String author = null;
+                rs_author.next();
+                author = rs_author.getString("username");
 
                 stmt_react = conn.prepareStatement(sqlReact + String.valueOf(id));
                 rs_react = stmt_react.executeQuery();
-                while(rs_react.next()){
-                    reactions.add(new Reaction(rs_react.getInt("id"), rs_react.getInt("post_id"), rs_react.getInt("user_id"), rs_react.getTimestamp("created_at").toLocalDateTime()));
+                if (rs_react != null) {
+                    while(rs_react.next()){
+                        reactions.add(new Reaction(rs_react.getInt("id"), rs_react.getInt("post_id"), rs_react.getInt("user_id"), rs_react.getTimestamp("created_at").toLocalDateTime()));
+                    }
                 }
 
                 stmt_com = conn.prepareStatement(sqlCom + String.valueOf(id));
                 rs_com = stmt_com.executeQuery();
-                while(rs_com.next()){
-                    comments.add(new Comments(rs_com.getInt("id"), rs_com.getInt("post_id"), rs_com.getInt("user_id"), rs_com.getString("content"), rs_com.getTimestamp("created_at").toLocalDateTime()));
+                if (rs_com != null) {
+                    while(rs_com.next()){
+                        comments.add(new Comments(rs_com.getInt("id"), rs_com.getInt("post_id"), rs_com.getInt("user_id"), rs_com.getString("content"), rs_com.getTimestamp("created_at").toLocalDateTime()));
+                    }
                 }
 
                 String content = rs.getString("content");

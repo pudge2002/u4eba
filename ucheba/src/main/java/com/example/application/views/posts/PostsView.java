@@ -81,7 +81,7 @@ public class PostsView extends Composite<VerticalLayout> {
         Avatar avatar = new Avatar();
         avatar.setHeight("50px");
         avatar.setWidth("50px");
-        avatar.setName(person.getUserName());
+        avatar.setName(person.getAuthor());
         avatar.getStyle().set("background-color", person.getContent()); //цвет от авы пользователя
         header.add(avatar, name, date);
         header.getStyle().set("display", "flex");
