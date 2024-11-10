@@ -15,9 +15,9 @@ import java.sql.Statement;
 public class Connect_to_DataBase {
         private static Connect_to_DataBase instance;
         private Connection connection;
-        private static final String URL = "jdbc:postgresql://localhost:5432/local";
-        private static final String USER = "postgres";
-        private static final String PASSWORD = "12345";
+        private static final String URL = "jdbc:postgresql://26.133.59.159:5432/postgres";
+        private static final String USER = "readonlyuser";
+        private static final String PASSWORD = "password";
 
         private Connect_to_DataBase() throws SQLException {
             try {

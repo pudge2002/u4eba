@@ -33,6 +33,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
     HorizontalLayout Navbar;
 
     public MainView() throws SQLException {
+
         UserData userData = loadUserDataFromCookies();
         VerticalLayout content = CreateContent();
         content.setSizeFull();
@@ -114,16 +115,15 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
             DrawerToggle toggle = new DrawerToggle();
 
             H1 title = new H1("ucheba");
-            title.getStyle().set("font-size", "var(--lumo-font-size-l)")
-                    .set("margin", "0");
-
-            Navbar = new desktopNav();
+            title.getStyle().set("font-size", "var(--lumo-font-size-l)");
+            title.getStyle().set("margin-left","15%");
+            desktopNav Navbar = new desktopNav();
 
             Scroller scroller = new Scroller(Navbar);
             scroller.setClassName(LumoUtility.Padding.SMALL);
-
+            setDrawerOpened(true);
             addToDrawer(scroller);
-            addToNavbar(toggle, title);
+            addToNavbar(title);
         }
     }
 

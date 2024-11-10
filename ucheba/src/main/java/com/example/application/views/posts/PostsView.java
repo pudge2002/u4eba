@@ -3,8 +3,10 @@ package com.example.application.views.posts;
 import com.example.application.Model.Controller;
 import com.example.application.localdata.Post;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -12,6 +14,8 @@ import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @PageTitle("Posts")
@@ -67,14 +71,26 @@ public class PostsView extends Composite<VerticalLayout> {
         header.setSpacing(false);
         header.getThemeList().add("spacing-s");
 
-        Span name = new Span(person.getHeading());
-        name.addClassName("name");
-        Span date = new Span(String.valueOf(person.getCreatedAt()));
+        H3 name = new H3(person.getHeading());
+//        name.addClassName("name");
+        LocalDateTime createdAt = person.getCreatedAt();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = createdAt.format(formatter);
+        Span date = new Span(formattedDate);
         date.addClassName("date");
-        header.add(name, date);
+        Avatar avatar = new Avatar();
+        avatar.setHeight("50px");
+        avatar.setWidth("50px");
+        avatar.setName(person.getUserName());
+        avatar.getStyle().set("background-color", person.getContent()); //цвет от авы пользователя
+        header.add(avatar, name, date);
+        header.getStyle().set("display", "flex");
+        header.getStyle().set("align-items", "flex-start"); // Центрируем элементы по горизонтали
+
+       header.setWidthFull(); // Устанавливаем ширину контейнера на 100%
 
         Span post = new Span(person.getContent());
-        post.addClassName("post");
+//        post.addClassName("post");/
 
 //        HorizontalLayout actions = new HorizontalLayout();
 //        actions.addClassName("actions");

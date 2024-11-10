@@ -1,4 +1,16 @@
+html, body {
+    background-color: #f0f0f0; /* Установите нужный цвет фона */
+}
+vaadin-app-layout::part(navbar) {
+    background-color: rgba(250,136,169,0.7); /* Зеленый цвет */
+    color: white; /* Белый цвет текста */
+}
 
+/* Стили для боковой панели */
+vaadin-app-layout::part(drawer) {
+    background-color: transparent; /* Темно-зеленый цвет */
+
+}
 .pinkText{
     color: #c04b6d;
     }
