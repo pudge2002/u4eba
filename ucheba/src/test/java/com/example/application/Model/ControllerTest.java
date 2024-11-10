@@ -12,7 +12,7 @@ class ControllerTest {
     void getAllPosts() {
         try {
             Controller db = new Controller();
-            System.out.println(db.getAllPosts());
+            System.out.println(db.getAllPosts().toString());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

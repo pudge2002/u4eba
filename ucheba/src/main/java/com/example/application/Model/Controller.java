@@ -119,8 +119,10 @@ public class Controller {
                 stmt_author = conn.prepareStatement(sqlAuthor + String.valueOf(userId));
                 rs_author = stmt_author.executeQuery();
                 String author = null;
+                String avatar = null;
                 rs_author.next();
                 author = rs_author.getString("username");
+                avatar = rs_author.getString("avatar");
 
                 stmt_react = conn.prepareStatement(sqlReact + String.valueOf(id));
                 rs_react = stmt_react.executeQuery();
@@ -142,7 +144,7 @@ public class Controller {
                 String heading = rs.getString("heading");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
 
-                posts.add(new Post(id, userId, author, heading, content, reactions, comments, createdAt));
+                posts.add(new Post(id, userId, author, avatar, heading, content, reactions, comments, createdAt));
             }
         } catch (Exception e) {
             posts.add(new Post());

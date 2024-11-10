@@ -67,10 +67,14 @@ public class PostOpenView extends Composite<VerticalLayout> {
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
         post = (Post) VaadinSession.getCurrent().getAttribute("post");
-
-        personName.setText(post.getAuthor());
-        title.setText(post.getHeading());
-        text.setText(post.getContent());
+        if (post != null) {
+            personName.setText(post.getAuthor());
+            title.setText(post.getHeading());
+            text.setText(post.getContent());
+        }
+//        personName.setText(post.getAuthor());
+//        title.setText(post.getHeading());
+//        text.setText(post.getContent());
 //        if (person != null) {
 //            // Отобразите данные Person в форме редактирования
 //            getContent().add(new Div("Editing: " + person.getName()));

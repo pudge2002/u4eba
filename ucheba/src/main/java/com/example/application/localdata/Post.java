@@ -9,14 +9,16 @@ public class Post {
     private String heading;
     private String content;
     private LocalDateTime createdAt;
+    private String avatar;
 
     private List<Reaction> reaction;
     private List<Comments> comments;
 
-    public Post(int id, int userId, String author, String heading, String content, List<Reaction> reaction, List<Comments> comments, LocalDateTime createdAt) {
+    public Post(int id, int userId, String author, String avatar, String heading, String content, List<Reaction> reaction, List<Comments> comments, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
         this.author = author;
+        this.avatar = avatar;
         this.heading = heading;
         this.content = content;
         this.reaction = reaction;
@@ -95,6 +97,15 @@ public class Post {
     public void setComments(List<Comments> comments) {
         this.comments = comments;
     }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
 
     @Override
     public String toString() {
