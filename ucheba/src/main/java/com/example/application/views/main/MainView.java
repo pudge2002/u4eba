@@ -54,7 +54,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
 
         Button addPost = new Button(VaadinIcon.PLUS.create());
         addPost.addClickListener(event -> {
-            Post post = new Post(0,"","");
+            Post post = new Post(); // тут поправить !!!
             VaadinSession.getCurrent().setAttribute("post", post);
             getUI().ifPresent(ui -> ui.navigate("page-edit"));
         });

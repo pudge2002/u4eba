@@ -67,7 +67,7 @@ public class PageEditorPage extends Composite<VerticalLayout> {
         super.onAttach(attachEvent);
         post = (Post) VaadinSession.getCurrent().getAttribute("post");
 
-        personName.setText(post.getUserName());
+        personName.setText(post.getAuthor());
         title.setValue(post.getHeading());
         text.setValue(post.getContent());
 //        if (person != null) {
@@ -108,7 +108,7 @@ public class PageEditorPage extends Composite<VerticalLayout> {
         saveButton.addClickListener(event -> {
             UI.getCurrent().navigate(AccountView.class);
 
-            Post pt = new Post(userData.getUserId(), text.getValue(), title.getValue());
+            Post pt = new Post(); // тут поправить !!!
             db.savePost(pt, null);
         });
 

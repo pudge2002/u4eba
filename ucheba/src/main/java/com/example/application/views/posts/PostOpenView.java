@@ -68,7 +68,7 @@ public class PostOpenView extends Composite<VerticalLayout> {
         super.onAttach(attachEvent);
         post = (Post) VaadinSession.getCurrent().getAttribute("post");
 
-        personName.setText(post.getUserName());
+        personName.setText(post.getAuthor());
         title.setText(post.getHeading());
         text.setText(post.getContent());
 //        if (person != null) {

@@ -1,8 +1,6 @@
 package com.example.application.Model;
 
-import com.example.application.localdata.Media;
-import com.example.application.localdata.Post;
-import com.example.application.localdata.UserData;
+import com.example.application.localdata.*;
 import com.vaadin.flow.server.VaadinResponse;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinSession;
@@ -39,10 +37,8 @@ public class Controller {
                     UserData userData = new UserData(userid, userName, userEmail, userDescription, userAvatar);
 
                     VaadinSession.getCurrent().setAttribute(UserData.class, userData);
-
                     // Сохранение данных в куки
                     saveUserDataToCookies(userData);
-
                     return true;
                 } else {
                     return false;
@@ -58,11 +54,9 @@ public class Controller {
         String query = "INSERT INTO users (username, password_hash, email) VALUES (?, ?, ?)";
         Connection connection = dbConnection.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, email);
-
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -72,17 +66,14 @@ public class Controller {
     }
 
     public boolean saveUser() {
-        System.out.println("щас сохраню");
-
         UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
-//        System.out.println(userData.getAvatar() , userData.getUsername(), userData.getEmail());
         String query = "UPDATE users SET username = ?, avatar = ?, description = ? WHERE email = ?;";
         Connection connection = dbConnection.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, userData.getUsername());
-            preparedStatement.setString(4, userData.getEmail());
             preparedStatement.setString(2, userData.getAvatar());
             preparedStatement.setString(3, userData.getDescription());
+            preparedStatement.setString(4, userData.getEmail());
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -93,25 +84,60 @@ public class Controller {
 
     public List<Post> getAllPosts(){
         List<Post> posts = new ArrayList<>();
+
         String sql = "SELECT * FROM posts";
+        String sqlCom = "Select * from comments where id = ";
+        String sqlReact = "Select * from reaction where id = ";
+        String sqlAuthor = "Select * from users where id = ";
+
         Connection conn;
+
         PreparedStatement stmt;
+        PreparedStatement stmt_author;
+        PreparedStatement stmt_com;
+        PreparedStatement stmt_react;
+
         ResultSet rs;
+        ResultSet rs_author;
+        ResultSet rs_com;
+        ResultSet rs_react;
+
+        List<Reaction> reactions = null;
+        List<Comments> comments = null;
+
 
         try {
             conn = dbConnection.getConnection();
+
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
                 int id = rs.getInt("id");
                 int userId = rs.getInt("user_id");
+
+                stmt_author = conn.prepareStatement(sqlAuthor + String.valueOf(userId));
+                rs_author = stmt_author.executeQuery();
+                String author = rs_author.getString("username");
+
+                stmt_react = conn.prepareStatement(sqlReact + String.valueOf(id));
+                rs_react = stmt_react.executeQuery();
+                while(rs_react.next()){
+                    reactions.add(new Reaction(rs_react.getInt("id"), rs_react.getInt("post_id"), rs_react.getInt("user_id"), rs_react.getTimestamp("created_at").toLocalDateTime()));
+                }
+
+                stmt_com = conn.prepareStatement(sqlCom + String.valueOf(id));
+                rs_com = stmt_com.executeQuery();
+                while(rs_com.next()){
+                    comments.add(new Comments(rs_com.getInt("id"), rs_com.getInt("post_id"), rs_com.getInt("user_id"), rs_com.getString("content"), rs_com.getTimestamp("created_at").toLocalDateTime()));
+                }
+
                 String content = rs.getString("content");
                 String heading = rs.getString("heading");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
-                posts.add(new Post(userId, content, heading, createdAt));
-            }
 
+                posts.add(new Post(id, userId, author, heading, content, reactions, comments, createdAt));
+            }
         } catch (Exception e) {
             posts.add(new Post());
             System.err.println("Ошибка при загрузке постов: " + e.getMessage());

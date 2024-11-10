@@ -5,9 +5,6 @@ public class UserData {
     private String email;
     private String description;
     private String avatar;
-
-
-
     private int userId;
 
     public UserData(int userId, String username, String email, String description, String avatar) {
