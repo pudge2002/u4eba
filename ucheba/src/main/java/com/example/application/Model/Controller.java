@@ -152,8 +152,76 @@ public class Controller {
         }
         return posts;
     }
+    public List<Post> getUserPosts(int userId){
+        List<Post> posts = new ArrayList<>();
 
-    public String getUserameById(int id) {
+        String sql = "SELECT * FROM posts where id = ?";
+        String sqlCom = "Select * from comments where id = ";
+        String sqlReact = "Select * from reaction where id = ";
+        String sqlAuthor = "Select * from users where id = ";
+
+        Connection conn;
+
+        PreparedStatement stmt;
+        PreparedStatement stmt_author;
+        PreparedStatement stmt_com;
+        PreparedStatement stmt_react;
+
+        ResultSet rs;
+        ResultSet rs_author;
+        ResultSet rs_com;
+        ResultSet rs_react;
+
+        List<Reaction> reactions = null;
+        List<Comments> comments = null;
+
+
+        try {
+            conn = dbConnection.getConnection();
+
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                stmt_author = conn.prepareStatement(sqlAuthor + String.valueOf(userId));
+                rs_author = stmt_author.executeQuery();
+                String author = null;
+                String avatar = null;
+                rs_author.next();
+                author = rs_author.getString("username");
+                avatar = rs_author.getString("avatar");
+
+                stmt_react = conn.prepareStatement(sqlReact + String.valueOf(id));
+                rs_react = stmt_react.executeQuery();
+                if (rs_react != null) {
+                    while(rs_react.next()){
+                        reactions.add(new Reaction(rs_react.getInt("id"), rs_react.getInt("post_id"), rs_react.getInt("user_id"), rs_react.getTimestamp("created_at").toLocalDateTime()));
+                    }
+                }
+
+                stmt_com = conn.prepareStatement(sqlCom + String.valueOf(id));
+                rs_com = stmt_com.executeQuery();
+                if (rs_com != null) {
+                    while(rs_com.next()){
+                        comments.add(new Comments(rs_com.getInt("id"), rs_com.getInt("post_id"), rs_com.getInt("user_id"), rs_com.getString("content"), rs_com.getTimestamp("created_at").toLocalDateTime()));
+                    }
+                }
+
+                String content = rs.getString("content");
+                String heading = rs.getString("heading");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+
+                posts.add(new Post(id, userId, author, avatar, heading, content, reactions, comments, createdAt));
+            }
+        } catch (Exception e) {
+            posts.add(new Post());
+            System.err.println("Ошибка при загрузке постов: " + e.getMessage());
+        }
+        return posts;
+    }
+    public UserData getUserById(int id) {
         String query = "SELECT * FROM users WHERE id = ?";
         Connection connection = dbConnection.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -161,17 +229,70 @@ public class Controller {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    String userName = resultSet.getString("username");
-                    return userName;
+                    int userId = resultSet.getInt("id");
+                    String username = resultSet.getString("username");
+                    String email = resultSet.getString("email");
+                    String description = resultSet.getString("description");
+                    String avatar = resultSet.getString("avatar");
+
+                    return new UserData(userId, username, email, description, avatar);
                 } else {
-                    return null; // Или можно вернуть пустую строку, если пользователь не найден
+                    return null; // Или можно вернуть пустой объект UserData, если пользователь не найден
                 }
             }
         } catch (SQLException e) {
             System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
-            return null; // Или можно вернуть пустую строку в случае ошибки
+            return null; // Или можно вернуть пустой объект UserData в случае ошибки
         }
     }
+    public void updatePost(Post post, List<Media> mediaList, Connection conn) {
+        String sql = "UPDATE posts SET content = ?, heading = ? WHERE id = ?";
+        PreparedStatement stmt;
+
+        try {
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, post.getContent());
+            stmt.setString(2, post.getHeading());
+            stmt.setInt(3, post.getId());
+            stmt.executeUpdate();
+
+            // Обновление медиафайлов
+            if (mediaList != null && !mediaList.isEmpty()) {
+                updateMedia(post.getId(), mediaList, conn);
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка при обновлении поста: " + e.getMessage());
+        }
+    }
+
+    private void updateMedia(int postId, List<Media> mediaList, Connection conn) {
+        String deleteSql = "DELETE FROM media WHERE post_id = ?";
+        String insertSql = "INSERT INTO media (post_id, media_type, media_data, created_at) VALUES (?, ?, ?, ?)";
+        PreparedStatement deleteStmt;
+        PreparedStatement insertStmt;
+
+        try {
+            // Удаление старых медиафайлов
+            deleteStmt = conn.prepareStatement(deleteSql);
+            deleteStmt.setInt(1, postId);
+            deleteStmt.executeUpdate();
+
+            // Добавление новых медиафайлов
+            insertStmt = conn.prepareStatement(insertSql);
+            for (Media media : mediaList) {
+                insertStmt.setInt(1, postId);
+                insertStmt.setString(2, media.getMediaType());
+                insertStmt.setString(3, media.getMediaData());
+                insertStmt.setTimestamp(4, Timestamp.valueOf(media.getCreatedAt()));
+                insertStmt.addBatch();
+            }
+            insertStmt.executeBatch();
+        } catch (Exception e) {
+            System.err.println("Ошибка при обновлении медиафайлов: " + e.getMessage());
+        }
+    }
+
     public void savePost(Post post, List<Media> mediaList) {
         String sql = "INSERT INTO posts (user_id, content, heading) VALUES (?, ?, ?)";
         Connection conn;
@@ -216,7 +337,79 @@ public class Controller {
             System.err.println("Ошибка при сохранении медиа: " + e.getMessage());
         }
     }
+    public void saveQuestion(Question question, Connection conn) {
+        String sql = "INSERT INTO question (user_id, content, created_at) VALUES (?, ?, ?)";
+        PreparedStatement stmt;
 
+        try {
+            stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            stmt.setInt(1, question.getUserId());
+            stmt.setString(2, question.getContent());
+            stmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            stmt.executeUpdate();
+
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                question.setId(generatedKeys.getInt(1));
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при добавлении вопроса: " + e.getMessage());
+        }
+    }
+
+    public void updateQuestion(Question question, Connection conn) {
+        String sql = "UPDATE question SET content = ? WHERE id = ?";
+        PreparedStatement stmt;
+
+        try {
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, question.getContent());
+            stmt.setInt(2, question.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Ошибка при обновлении вопроса: " + e.getMessage());
+        }
+    }
+
+    public void saveAnswer(Answer answer, Connection conn) {
+        String sql = "INSERT INTO answer (quest_id, user_id, content, created_at) VALUES (?, ?, ?, ?)";
+        PreparedStatement stmt;
+
+        try {
+            stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            stmt.setInt(1, answer.getQuestId());
+            stmt.setInt(2, answer.getUserId());
+            stmt.setString(3, answer.getContent());
+            stmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            stmt.executeUpdate();
+
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                answer.setId(generatedKeys.getInt(1));
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при добавлении ответа: " + e.getMessage());
+        }
+    }
+
+    public void updateAnswer(Answer answer, Connection conn) {
+        String sql = "UPDATE answer SET content = ? WHERE id = ?";
+        PreparedStatement stmt;
+
+        try {
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, answer.getContent());
+            stmt.setInt(2, answer.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Ошибка при обновлении ответа: " + e.getMessage());
+        }
+    }
+    
     public List<Media> getMediaByPostId(int postId) throws SQLException {
         List<Media> mediaList = new ArrayList<>();
         String sql = "SELECT * FROM media WHERE post_id = ?";
