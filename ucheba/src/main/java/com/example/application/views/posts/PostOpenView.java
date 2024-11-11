@@ -3,19 +3,22 @@ package com.example.application.views.posts;
 import com.example.application.Model.Controller;
 import com.example.application.localdata.Post;
 import com.example.application.views.main.MainView;
+import com.example.application.views.navbars.desktopNav;
+import com.example.application.views.navbars.mobileNav;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Menu;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 
 import java.sql.SQLException;
@@ -23,46 +26,39 @@ import java.sql.SQLException;
 @PageTitle("Post Open")
 @Menu(icon = "line-awesome/svg/edit.svg", order = 1)
 @Route("post-open")
-public class PostOpenView extends Composite<VerticalLayout> {
+public class PostOpenView extends AppLayout implements BeforeEnterObserver {
 
     Post post = new Post();
-    Span personName = new Span("");
+    H4 personName = new H4();
     Controller db = new Controller();
-
+    HorizontalLayout Navbar;
     H2 title = new H2();
     Paragraph text = new Paragraph();
 
     PostOpenView() throws SQLException {
-        getContent().setWidthFull();
-        getContent().getStyle().set("overflow-y", "auto");
+        VerticalLayout content = CreateContent();
+        content.setWidthFull();
+        content.getStyle().set("overflow-y", "auto");
+        setContent(content);
+        CreateNavbar();
 
+    }
+    private VerticalLayout CreateContent() throws SQLException {
+        VerticalLayout content = new VerticalLayout();
         HorizontalLayout header = getHeader();
-        getContent().add(header);
+        content.add(header);
 
         title.setWidthFull();
         title.getStyle().set("font-size", "30px");
         // title.getStyle().set("background-color", "#E6E9ED");
-        getContent().add(title);
+        content.add(title);
 
         text.setMinHeight("100px");
         text.setWidthFull();
-      //  text.getStyle().set("background-color", "#E6E9ED");
-        getContent().add(text);
-
-//        String fileName = "example.txt";
-//        String fileContent = "This is an example file.";
-//        InputStream inputStream = new ByteArrayInputStream(fileContent.getBytes());
-//
-//        // Создаем StreamResource для файла
-//        StreamResource resource = new StreamResource(fileName, () -> inputStream);
-//
-//        // Создаем компонент Anchor для скачивания файла
-//        Anchor downloadLink = new Anchor(resource, "Download " + fileName);
-//
-//        // Добавляем компонент Anchor в макет
-//        getContent().add(downloadLink);
+        //  text.getStyle().set("background-color", "#E6E9ED");
+        content.add(text);
+        return content;
     }
-
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
@@ -107,12 +103,56 @@ public class PostOpenView extends Composite<VerticalLayout> {
         header.add(returnButton);
 
         personName.getStyle().set("font-size", "20px");
-        header.add(personName);
+        Avatar avatar = new Avatar();
+        avatar.setName(post.getAuthor());
+        avatar.getStyle().set("background-color", post.getAvatar());
+        header.add(avatar,personName);
 
         returnButton.getStyle().set("margin-right", "0");
         personName.getStyle().set("margin-right", "0");
 
         return header;
+    }
+    public void CreateNavbar(){
+        boolean isMobile = isMobileDevice();
+        if (isMobile) {
+
+
+        } else {
+
+
+            DrawerToggle toggle = new DrawerToggle();
+
+
+            StreamResource image = new StreamResource("logo3.png",
+                    () -> getClass().getResourceAsStream("/images/logo3.png"));
+            Image logo = new Image(image,"ucheba logo");
+            logo.setWidth("40px");
+            logo.setHeight("40px");
+            logo.getStyle().set("margin-left", "13%");
+//            title.getStyle().set("font-size", "var(--lumo-font-size-xl)");
+
+            desktopNav Navbar = new desktopNav();
+
+
+            Scroller scroller = new Scroller(Navbar);
+//            scroller.setClassName(LumoUtility.Padding.XLARGE);
+
+            setDrawerOpened(true);
+            addToDrawer(scroller);
+            addToNavbar(logo);
+        }
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+
+    }
+
+    private boolean isMobileDevice() {
+        VaadinSession session = VaadinSession.getCurrent();
+        String userAgent = session.getBrowser().getBrowserApplication();
+        return userAgent.contains("Mobile") || userAgent.contains("Android") || userAgent.contains("iPhone");
     }
 }
 

@@ -22,7 +22,7 @@ head::after {
     line-height: normal;
 }
 vaadin-app-layout::part(navbar) {
-    background-color: #e34d72;
+    background-color: #cc3366;
     color: white;
 }
 

@@ -6,13 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d682cc4d-2470-491e-b351-190bb4f2ced1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/themes/ucheba-app/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/themes/ucheba-app/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/icons/logo.ico" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/themes/ucheba-app/theme-editor.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/themes/ucheba-app/theme-editor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/account/EditAccountView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/account/EditAccountView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/authorization/AuthorizationView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/authorization/AuthorizationView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/main/MainView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/main/MainView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/navbars/desktopNav.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/navbars/desktopNav.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/pageeditor/PageEditorPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/pageeditor/PageEditorPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/posts/PostOpenView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/posts/PostOpenView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/posts/PostsView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/posts/PostsView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,13 +30,6 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
-  </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
-      </MavenGeneralSettings>
-    </option>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4

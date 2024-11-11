@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @PageTitle("Posts")
-@Menu(icon = "line-awesome/svg/list-solid.svg", order = 4)
+@Menu(icon = "icon/1.ico", order = 4)
 @Route(value = "posts")
 public class PostsView extends Composite<VerticalLayout> {
 
@@ -82,12 +82,12 @@ public class PostsView extends Composite<VerticalLayout> {
         avatar.setHeight("50px");
         avatar.setWidth("50px");
         avatar.setName(person.getAuthor());
-        avatar.getStyle().set("background-color", person.getAvatar()); //цвет от авы пользователя
+        avatar.getStyle().set("background-color", person.getAvatar());
         header.add(avatar, name, date);
         header.getStyle().set("display", "flex");
-        header.getStyle().set("align-items", "flex-start"); // Центрируем элементы по горизонтали
+        header.getStyle().set("align-items", "flex-start");
 
-        header.setWidthFull(); // Устанавливаем ширину контейнера на 100%
+        header.setWidthFull();
         H3 headerPost = new H3(person.getHeading());
         Span post = new Span(person.getContent());
 //        post.addClassName("post");/

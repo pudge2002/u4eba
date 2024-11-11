@@ -9,6 +9,7 @@ import com.example.application.views.posts.PostsView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Image;
@@ -30,6 +31,7 @@ import java.sql.SQLException;
 @PageTitle("Main")
 @Menu(icon = "line-awesome/svg/pencil-ruler-solid.svg", order = 0)
 @Route(value = "main")
+@CssImport("./themes/ucheba-app/styles.css")
 public class MainView extends AppLayout implements BeforeEnterObserver {
 
     TabSheet tabSheet = new TabSheet();
@@ -108,11 +110,11 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
             DrawerToggle toggle = new DrawerToggle();
 
 
-            StreamResource image = new StreamResource("logo.png",
-                    () -> getClass().getResourceAsStream("/images/logo.png"));
+            StreamResource image = new StreamResource("logo3.png",
+                    () -> getClass().getResourceAsStream("/images/logo3.png"));
             Image logo = new Image(image,"ucheba logo");
-            logo.setWidth("50px");
-            logo.setHeight("50px");
+            logo.setWidth("40px");
+            logo.setHeight("40px");
             logo.getStyle().set("margin-left", "13%");
 //            title.getStyle().set("font-size", "var(--lumo-font-size-xl)");
 
