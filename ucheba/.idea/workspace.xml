@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d682cc4d-2470-491e-b351-190bb4f2ced1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/icons/logo.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/frontend/themes/ucheba-app/theme-editor.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/themes/ucheba-app/theme-editor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/main/MainView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/main/MainView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/pageeditor/PageEditorPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/pageeditor/PageEditorPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/posts/PostOpenView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/posts/PostOpenView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/posts/PostsView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/posts/PostsView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/images/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/images/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/application/views/account/AccountView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/application/views/account/AccountView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -13,10 +13,7 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
@@ -25,6 +22,7 @@ import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
@@ -121,9 +119,12 @@ public class AccountView extends AppLayout implements BeforeEnterObserver {
 
             DrawerToggle toggle = new DrawerToggle();
 
-            H1 title = new H1("ucheba");
-            title.getStyle().set("font-size", "var(--lumo-font-size-l)")
-                    .set("margin", "0");
+            StreamResource image = new StreamResource("logo3.png",
+                    () -> getClass().getResourceAsStream("/images/logo3.png"));
+            Image logo = new Image(image,"ucheba logo");
+            logo.setWidth("40px");
+            logo.setHeight("40px");
+            logo.getStyle().set("margin-left", "13%");
 
             Navbar = new desktopNav();
 
@@ -131,7 +132,7 @@ public class AccountView extends AppLayout implements BeforeEnterObserver {
             scroller.setClassName(LumoUtility.Padding.SMALL);
 
             addToDrawer(scroller);
-            addToNavbar(toggle, title);
+            addToNavbar(logo);
         }
     }
 
