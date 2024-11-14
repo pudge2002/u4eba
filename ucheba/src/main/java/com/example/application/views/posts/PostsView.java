@@ -2,6 +2,7 @@ package com.example.application.views.posts;
 
 import com.example.application.Model.Controller;
 import com.example.application.localdata.Post;
+import com.example.application.localdata.UserData;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.grid.Grid;
@@ -28,7 +29,7 @@ public class PostsView extends Composite<VerticalLayout> {
 
     public PostsView(String navigationPage) throws SQLException {
 
-        afterNavigation();
+        afterNavigation(navigationPage);
 
         addClassName("posts-view");
         getContent().setSizeFull();
@@ -119,10 +120,14 @@ public class PostsView extends Composite<VerticalLayout> {
     }
 
 
-    public void afterNavigation() {
-
+    public void afterNavigation(String namePage) {
+        UserData userData = VaadinSession.getCurrent().getAttribute(UserData.class);
+        List<Post> persons;
         // Set some data when this view is displayed.
-        List<Post> persons = db.getAllPosts();
+        if(namePage =="page-edit")
+            persons = db.getUserPosts(userData.getUserId());
+        else
+            persons = db.getAllPosts();
 
         grid.setItems(persons);
     }

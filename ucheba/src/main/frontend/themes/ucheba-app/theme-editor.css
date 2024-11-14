@@ -7,7 +7,7 @@ head {
 }
 
 head::after {
-    content: url('icons/logo.ico');
+    content: url('icons/1.ico');
     display: none;
 }
 .navbar-title-container {
