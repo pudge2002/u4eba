@@ -10,7 +10,7 @@
 
 .posts-view vaadin-grid,
 .posts-view vaadin-grid-cell-content {
-  background-color: transparent;
+  background-color: #f0f0f0;
 }
 
 .posts-view .card {

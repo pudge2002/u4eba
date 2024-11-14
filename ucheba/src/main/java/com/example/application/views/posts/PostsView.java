@@ -44,7 +44,7 @@ public class PostsView extends Composite<VerticalLayout> {
 
         grid.getStyle().set("margin", "0");
         grid.getStyle().set("padding", "0");
-        grid.getStyle().set("background-color", "#E6E9ED");
+        grid.getStyle().set("background-color", "#f0f0f0");
 
         grid.addItemClickListener(event -> {
             Post post = event.getItem();
@@ -91,7 +91,8 @@ public class PostsView extends Composite<VerticalLayout> {
         header.setWidthFull();
         H3 headerPost = new H3(person.getHeading());
         Span post = new Span(person.getContent());
-//        post.addClassName("post");/
+        post.addClassName("post");
+        post.getStyle().set("padding-bottom","15px");
 
 //        HorizontalLayout actions = new HorizontalLayout();
 //        actions.addClassName("actions");

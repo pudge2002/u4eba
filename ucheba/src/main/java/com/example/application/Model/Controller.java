@@ -155,7 +155,7 @@ public class Controller {
     public List<Post> getUserPosts(int userId){
         List<Post> posts = new ArrayList<>();
 
-        String sql = "SELECT * FROM posts where id = ?";
+        String sql = "SELECT * FROM posts where user_id = ?";
         String sqlCom = "Select * from comments where id = ";
         String sqlReact = "Select * from reaction where id = ";
         String sqlAuthor = "Select * from users where id = ";
@@ -245,11 +245,12 @@ public class Controller {
             return null; // Или можно вернуть пустой объект UserData в случае ошибки
         }
     }
-    public void updatePost(Post post, List<Media> mediaList, Connection conn) {
+    public void updatePost(Post post, List<Media> mediaList) {
         String sql = "UPDATE posts SET content = ?, heading = ? WHERE id = ?";
         PreparedStatement stmt;
-
+        Connection conn;
         try {
+            conn = dbConnection.getConnection();
             stmt = conn.prepareStatement(sql);
 
             stmt.setString(1, post.getContent());

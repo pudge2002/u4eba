@@ -118,8 +118,8 @@ public class EditAccountView extends Composite<VerticalLayout> implements Before
         TextField userName = new TextField("Изменить имя");
         TextField about = new TextField("Описание профиля");
         userName.getStyle().set("width","300px");
-        userName.setPlaceholder(userData.getUsername());
-        about.setPlaceholder(userData.getDescription());
+        userName.setValue(userData.getUsername());
+        about.setValue(userData.getDescription());
         about.getStyle().set("width","300px").setHeight("300px");
         about.getStyle().set("height","100px");
         getContent().add(userName);

@@ -27,6 +27,7 @@ import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 @PageTitle("Page Editor")
 @Menu(icon = "line-awesome/svg/edit.svg", order = 1)
@@ -116,9 +117,18 @@ public class PageEditorPage extends AppLayout implements BeforeEnterObserver {
         Button saveButton = new Button(VaadinIcon.CHECK.create());
         saveButton.addClickListener(event -> {
             UI.getCurrent().navigate(AccountView.class);
-
-            Post pt = new Post(); // тут поправить !!!
-            db.savePost(pt, null);
+            int id = post.getId();
+            Post pt;
+            if (id != 0) {
+                pt = post;
+                pt.setHeading(title.getValue());
+                pt.setContent(text.getValue());
+                db.updatePost(pt, null);
+            } else {
+                pt = new Post(userData.getUserId(),userData.getUsername(),userData.getAvatar(),title.getValue(), text.getValue(), null,null,LocalDateTime.now() );
+                db.savePost(pt,null);
+            }
+             // тут поправить !!!
         });
 
         saveButton.getStyle().set("margin-top", "0");

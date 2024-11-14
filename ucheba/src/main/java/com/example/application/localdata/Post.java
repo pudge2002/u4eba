@@ -14,6 +14,18 @@ public class Post {
     private List<Reaction> reaction;
     private List<Comments> comments;
 
+    public Post( int userId, String author, String avatar, String heading, String content, List<Reaction> reaction, List<Comments> comments, LocalDateTime createdAt) {
+
+        this.userId = userId;
+        this.author = author;
+        this.avatar = avatar;
+        this.heading = heading;
+        this.content = content;
+        this.reaction = reaction;
+        this.comments = comments;
+        this.createdAt = createdAt;
+    }
+
     public Post(int id, int userId, String author, String avatar, String heading, String content, List<Reaction> reaction, List<Comments> comments, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
