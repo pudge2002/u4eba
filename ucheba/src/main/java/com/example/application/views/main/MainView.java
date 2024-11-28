@@ -88,7 +88,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         PostsView post2 = new PostsView("post-open");
 
         tabSheet.add("Популярное", post);
-        tabSheet.add("Вопрос/ответ", post2);
+
     }
 
     public void CreateNavbar(){

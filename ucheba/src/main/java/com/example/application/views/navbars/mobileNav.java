@@ -33,7 +33,6 @@ public class mobileNav extends HorizontalLayout {
         navigation.setPadding(false);
         navigation.setSpacing(false);
         navigation.add(createLink(VaadinIcon.HOME, "Home"),
-                createLink(VaadinIcon.SEARCH, "Search"),
                 createLink(VaadinIcon.USER, "Account"));
 
         return navigation;

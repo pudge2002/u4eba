@@ -38,7 +38,7 @@ public class desktopNav extends HorizontalLayout {
         navigation.setSpacing(true); // Установите spacing в true для добавления расстояния между кнопками
 
         navigation.add(createLink(VaadinIcon.HOME, "Главная"),
-                createLink(VaadinIcon.SEARCH, "Поиск"),
+
                 createLink(VaadinIcon.USER, "Аккаунт"));
         navigation.getStyle().set("margin-top", "10%");
         return navigation;
