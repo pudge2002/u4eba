@@ -4,6 +4,7 @@ import com.example.application.Model.*;
 import com.example.application.localdata.Post;
 import com.example.application.localdata.UserData;
 import com.example.application.views.account.AccountView;
+import com.example.application.views.main.MainView;
 import com.example.application.views.navbars.desktopNav;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Composite;
@@ -12,6 +13,7 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -93,7 +95,7 @@ public class PageEditorPage extends AppLayout implements BeforeEnterObserver {
 
         Button returnButton = new Button(VaadinIcon.ARROW_LEFT.create());
         returnButton.addClickListener(event -> {
-            UI.getCurrent().navigate(AccountView.class);
+            UI.getCurrent().navigate(MainView.class);
         });
 
         returnButton.getStyle().set("margin-top", "0");
@@ -110,13 +112,14 @@ public class PageEditorPage extends AppLayout implements BeforeEnterObserver {
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.setAllowCustomValue(true);
         comboBox.setItems("программирование", "биология", "литература", "армия");
+        H3 title2 = new H3("Создание поста");
         personName.getStyle().set("font-size", "20px");
         comboBox.setPlaceholder("категория");
-        header.add(comboBox);
+        header.add(title2);
         header.setAlignItems(FlexComponent.Alignment.CENTER); // Выравнивание по вертикали
         Button saveButton = new Button(VaadinIcon.CHECK.create());
         saveButton.addClickListener(event -> {
-            UI.getCurrent().navigate(AccountView.class);
+            UI.getCurrent().navigate(MainView.class);
             int id = post.getId();
             Post pt;
             if (id != 0) {

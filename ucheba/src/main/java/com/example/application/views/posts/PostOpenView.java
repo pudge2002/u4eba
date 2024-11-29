@@ -2,6 +2,8 @@ package com.example.application.views.posts;
 
 import com.example.application.Model.Controller;
 import com.example.application.localdata.Post;
+import com.example.application.localdata.Reaction;
+import com.example.application.localdata.UserData;
 import com.example.application.views.main.MainView;
 import com.example.application.views.navbars.desktopNav;
 import com.example.application.views.navbars.mobileNav;
@@ -22,6 +24,9 @@ import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @PageTitle("Post Open")
 @Menu(icon = "line-awesome/svg/edit.svg", order = 1)
@@ -33,6 +38,7 @@ public class PostOpenView extends AppLayout implements BeforeEnterObserver {
     Controller db = new Controller();
     HorizontalLayout Navbar;
     H2 title = new H2();
+    UserData userData;
     Paragraph text = new Paragraph();
 
     PostOpenView() throws SQLException {
@@ -46,17 +52,33 @@ public class PostOpenView extends AppLayout implements BeforeEnterObserver {
     private VerticalLayout CreateContent() throws SQLException {
         VerticalLayout content = new VerticalLayout();
         HorizontalLayout header = getHeader();
-        content.add(header);
 
         title.setWidthFull();
         title.getStyle().set("font-size", "30px");
         // title.getStyle().set("background-color", "#E6E9ED");
-        content.add(title);
 
         text.setMinHeight("100px");
         text.setWidthFull();
         //  text.getStyle().set("background-color", "#E6E9ED");
-        content.add(text);
+        Button like = new Button("Понравилось");
+        List<Reaction> filteredPeople = null;
+        if( post.getReaction() != null)
+            filteredPeople = post.getReaction().stream().filter(p -> p.getUser_id() == userData.getUserId() && p.getPost_id() == post.getId())
+                .collect(Collectors.toList());
+        if (filteredPeople != null) {
+            like.addClassName("post-open-view-button-2");
+            like.isDisableOnClick();
+        }
+        else {
+            like.addClassName("post-open-view-button-1");
+        }
+        like.addClickListener(event -> {
+            System.out.println("ahahah");
+            Reaction reaction = new Reaction(post.getId(), userData.getUserId());
+            like.addClassName("post-open-view-button-2");
+
+        });
+        content.add(header, title, text, like);
         return content;
     }
     @Override
@@ -68,6 +90,7 @@ public class PostOpenView extends AppLayout implements BeforeEnterObserver {
             title.setText(post.getHeading());
             text.setText(post.getContent());
         }
+        userData = VaadinSession.getCurrent().getAttribute(UserData.class);
 //        personName.setText(post.getAuthor());
 //        title.setText(post.getHeading());
 //        text.setText(post.getContent());

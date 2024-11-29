@@ -338,6 +338,7 @@ public class Controller {
             System.err.println("Ошибка при сохранении медиа: " + e.getMessage());
         }
     }
+   
     public void saveQuestion(Question question, Connection conn) {
         String sql = "INSERT INTO question (user_id, content, created_at) VALUES (?, ?, ?)";
         PreparedStatement stmt;

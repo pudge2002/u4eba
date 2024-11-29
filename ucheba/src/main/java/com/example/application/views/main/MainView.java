@@ -51,7 +51,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         VerticalLayout content = new VerticalLayout();
 
         setTabSheetSampleData();
-        content.add(tabSheet);
+//        content.add(tabSheet);
 
         tabSheet.setSizeFull();
         tabSheet.getStyle().set("margin-left", "0").set("padding-left","0");
@@ -77,17 +77,17 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         addPost.getStyle().set("font-size", "50px");
         addPost.getStyle().set("align-items", "center");
         addPost.getStyle().set("justify-content", "center");
-
+        PostsView post = new PostsView("post-open");
         content.add(addPost);
-
+        content.add(post);
         return content;
     }
 
     private void setTabSheetSampleData() throws SQLException {
-        PostsView post = new PostsView("post-open");
+
         PostsView post2 = new PostsView("post-open");
 
-        tabSheet.add("Популярное", post);
+
 
     }
 

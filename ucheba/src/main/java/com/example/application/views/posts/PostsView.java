@@ -9,6 +9,8 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
@@ -94,15 +96,17 @@ public class PostsView extends Composite<VerticalLayout> {
         post.addClassName("post");
         post.getStyle().set("padding-bottom","15px");
 
-//        HorizontalLayout actions = new HorizontalLayout();
+        HorizontalLayout actions = new HorizontalLayout();
 //        actions.addClassName("actions");
 //        actions.setSpacing(false);
 //        actions.getThemeList().add("spacing-s");
-//
-//        Icon likeIcon = VaadinIcon.HEART.create();
-//        likeIcon.addClassName("icon");
-//        Span likes = new Span(person.getLikes());
-//        likes.addClassName("likes");
+
+            Icon likeIcon = VaadinIcon.HEART.create();
+            likeIcon.addClassName("icon");
+            int allLikes = 0;
+            if (person.getReaction()!=null) allLikes = person.getReaction().size();
+            Span likes = new Span(String.valueOf(allLikes));
+            likes.addClassName("likes");
 //        Icon commentIcon = VaadinIcon.COMMENT.create();
 //        commentIcon.addClassName("icon");
 //        Span comments = new Span(person.getComments());
@@ -112,9 +116,9 @@ public class PostsView extends Composite<VerticalLayout> {
 //        Span shares = new Span(person.getShares());
 //        shares.addClassName("shares");
 //
-//        actions.add(likeIcon, likes, commentIcon, comments, shareIcon, shares);
+        actions.add(likeIcon, likes);
 
-        description.add(header,headerPost, post);
+        description.add(header,headerPost, post, actions);
         card.add(description);
         card.setSizeFull();
         return card;
