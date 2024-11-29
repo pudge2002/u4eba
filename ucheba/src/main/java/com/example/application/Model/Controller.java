@@ -294,6 +294,24 @@ public class Controller {
         }
     }
 
+    public void saveReaction(Reaction reaction) {
+        String sql = "INSERT INTO reactions (post_id, user_id) VALUES (?, ?)";
+        Connection conn;
+        PreparedStatement stmt;
+
+        try {
+            conn = dbConnection.getConnection();
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, reaction.getPost_id());
+            stmt.setInt(2, reaction.getPost_id());
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            System.err.println("Ошибка при сохранении реакций: " + e.getMessage());
+        }
+    }
+
     public void savePost(Post post, List<Media> mediaList) {
         String sql = "INSERT INTO posts (user_id, content, heading) VALUES (?, ?, ?)";
         Connection conn;
