@@ -35,6 +35,7 @@ public class PostOpenView extends AppLayout implements BeforeEnterObserver {
 
     Post post = new Post();
     H4 personName = new H4();
+    Controller controller = new Controller();
     Controller db = new Controller();
     HorizontalLayout Navbar;
     H2 title = new H2();
@@ -75,7 +76,12 @@ public class PostOpenView extends AppLayout implements BeforeEnterObserver {
         like.addClickListener(event -> {
             System.out.println("ahahah");
             Reaction reaction = new Reaction(post.getId(), userData.getUserId());
-            like.addClassName("post-open-view-button-2");
+            controller.saveReaction(reaction);
+
+                like.addClassName("post-open-view-button-2");
+                like.isDisableOnClick();
+
+
 
         });
         content.add(header, title, text, like);

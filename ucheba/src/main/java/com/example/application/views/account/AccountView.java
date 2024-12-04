@@ -160,6 +160,6 @@ public class AccountView extends AppLayout implements BeforeEnterObserver {
 
         Div questionsDiv = new Div(new Text("Пока пусто"));
         questionsDiv.addClassName("custom-div");
-        tabSheet.add("Вопросы", questionsDiv);
+        //tabSheet.add("Вопросы", questionsDiv);
     }
 }

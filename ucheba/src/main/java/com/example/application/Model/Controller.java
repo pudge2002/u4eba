@@ -87,7 +87,7 @@ public class Controller {
 
         String sql = "SELECT * FROM posts";
         String sqlCom = "Select * from comments where id = ";
-        String sqlReact = "Select * from reaction where id = ";
+        String sqlReact = "Select * from reaction where post_id = ";
         String sqlAuthor = "Select * from users where id = ";
 
         Connection conn;
@@ -126,6 +126,7 @@ public class Controller {
 
                 stmt_react = conn.prepareStatement(sqlReact + String.valueOf(id));
                 rs_react = stmt_react.executeQuery();
+                reactions = new ArrayList<>();
                 if (rs_react != null) {
                     while(rs_react.next()){
                         reactions.add(new Reaction(rs_react.getInt("id"), rs_react.getInt("post_id"), rs_react.getInt("user_id"), rs_react.getTimestamp("created_at").toLocalDateTime()));
@@ -295,7 +296,7 @@ public class Controller {
     }
 
     public void saveReaction(Reaction reaction) {
-        String sql = "INSERT INTO reactions (post_id, user_id) VALUES (?, ?)";
+        String sql = "INSERT INTO reaction (post_id, user_id) VALUES (?, ?)";
         Connection conn;
         PreparedStatement stmt;
 
@@ -304,7 +305,7 @@ public class Controller {
             stmt = conn.prepareStatement(sql);
 
             stmt.setInt(1, reaction.getPost_id());
-            stmt.setInt(2, reaction.getPost_id());
+            stmt.setInt(2, reaction.getUser_id());
             stmt.executeUpdate();
 
         } catch (Exception e) {
